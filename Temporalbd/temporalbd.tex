@@ -1,0 +1,1121 @@
+\documentclass[12pt]{beamer}
+
+\usepackage{color}
+\usepackage[normalem]{ulem}
+
+% Include figure files.
+\usepackage{graphicx}
+
+% Author, Title, etc.
+
+\title[Bases de Datos Temporales] 
+{%
+  Bases de Datos Temporales%
+}
+
+\author[Del Piano]
+{
+  Nicol\'as Del Piano
+}
+
+\date
+{
+Bases de Datos Avanzadas
+}
+
+\mode<presentation>{
+\usetheme{boxes}
+\useinnertheme{}
+\usecolortheme{whale}
+}
+\setbeamercolor{structure}{fg=red!80!black}
+\setbeamertemplate{footline}[frame number]
+\setbeamerfont{page number in head/foot}{size=\normalsize}
+
+\setbeamercolor{postit}{bg=yellow!50!white}
+\setbeamercolor{bluelick}{bg=blue!50!white}
+
+\begin{document}
+\frame{\titlepage}
+\begin{frame}[Opciones]
+\frametitle{Introducci\'on}
+\onslide<2->{El tiempo es un aspecto importante para los fen\'omenos del mundo real.}\\
+\ \\
+\onslide<3->{Los eventos ocurren en momentos de tiempo espec\'ificos.}\\
+\ \\
+\onslide<4->{A veces, nos interesa saber con cierta certeza cu\'ando ocurri\'o tal evento, y poder compararlo con otros para obtener informaci\'on de inter\'es.}
+\end{frame}
+
+\begin{frame}[Opciones]
+\frametitle{Introducci\'on}
+\onslide<2->{Muchas de las \'areas donde se aplican las bases de datos tienen naturaleza temporal: }\\
+\begin{itemize}
+\onslide<3->{\item Control de inventario.}\\
+\onslide<4->{\item Registros m\'edicos.}\\
+\onslide<5->{\item Sistemas de informaci\'on geogr\'afica.}
+\onslide<6->{\item Operaciones bancarias.}
+\onslide<7->{\item Data Warehousing.}
+\onslide<8->{\item Sistemas de control de reservas (aerol\'ineas, hoteles, etc.).}
+\onslide<9->{\item Aplicaciones cient\'ificas.}
+\onslide<10->{\item ... y muchos aspectos m\'as.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Relaciones no temporales}
+\begin{center}
+\onslide<2->{\begin{tabular}{|c|c|c|c|}
+\hline
+Id & Nombre & Estado & Sueldo \\
+\hline
+1 & Juan & Activo & 5700 \\
+\hline
+2 & Manuel & Activo & 2300 \\
+\hline
+\end{tabular}
+}
+\end{center}
+\onslide<3->{Muy comunes en los modelos relacionales.\\
+\ \\}
+\onslide<4->{
+Cada tupla representa un hecho que es verdadero ahora.
+Solo hay un estado representable de la base de datos: el actual (\textit{current snapshot}).\\
+\ \\}
+\onslide<5->{A medida que el tiempo transcurre, los datos se van actualizando y modificando.\\
+\ \\}
+\onslide<6->{
+Con este modelo, perdemos informaci\'on.
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem\'atica}
+\onslide<1->Las bases de datos convencionales representan el estado de la informaci\'on en un instante de tiempo dado.\\
+\onslide<2->Aunque la base de datos es actualizada, estos cambios son vistos como modificaciones del estado actual y los datos obsoletos son borrados.\\
+\onslide<3->Por lo tanto, s\'olo podemos utilizar la informaci\'on actual de la base de datos.\\
+\onslide<4->Esto genera un problema cuando queremos responder preguntas involucradas a intervalos de tiempo: \center \textbf{?`Cu\'ales empleados percibieron un aumento el mes pasado?}
+\end{frame}
+
+\begin{frame}
+\frametitle{?`Qu\'e es una Base de Datos Temporales?}
+\onslide<2->{Un \textbf{DBMS Temporal} es un Sistema de Gesti\'on de Base de Datos que proporciona herramientas para el manejo y control de Bases de Datos Temporales.\\
+\ \\}
+\onslide<3->{
+Una \textbf{Base de Datos Temporales} es una Base de Datos que tiene dimensi\'on del tiempo a trav\'es del almacenamiento de \textbf{datos temporales}.\\
+\ \\}
+\onslide<4->{
+Proporcionan un marco que mantiene la historia de los cambios que se produjeron en la fuente de datos.\\
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{?`Qu\'e es una Base de Datos Temporales?}
+Est\'an dise\~nadas para la captura de la informaci\'on que var\'ia en el transcurso del tiempo.\\
+\ \\
+\begin{center}\includegraphics[width=7cm,height=6cm]{bdtemp_linea.jpg}
+\end{center}
+%\ \\
+%El programador o dise\~nador de la Base de Datos no necesita escribir c\'odigo adicional para la informaci\'on que var\'ia con el tiempo.
+\end{frame}
+
+\begin{frame}
+\frametitle{Datos Temporales}
+\onslide<2->{Un dato temporal es un dato convencional al que se le asocia un per\'iodo de tiempo para expresar valores temporales en la base de datos.\\
+\ \\}
+\onslide<3->{
+Este agregado de informaci\'on temporal se denomina \textit{time-stamping}.\\
+\ \\}
+\onslide<4->{
+Al asociar el tiempo con la informaci\'on, es posible almacenar diferentes estados de una base de datos.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dimensi\'on del tiempo}
+Las Bases de Datos Temporales almacenan dos dimensiones del tiempo:
+\begin{itemize}
+\item Tiempo V\'alido
+\item Tiempo Transaccional	
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Dimensi\'on del tiempo: Tiempo V\'alido}
+\onslide<2->{Representa cu\'ando un hecho tiene validez, i.e, es verdadero en el mundo real.\\}
+\ \\
+\onslide<3->{
+Es independiente de si dicho evento fue registrado o no en la base de datos.	\\
+\ \\}
+\onslide<4->{
+Los Tiempos V\'alidos pueden encontrarse en el pasado, presente o futuro.\\
+\ \\}
+\onslide<5->{
+Todos los eventos tienen asociado un Tiempo V\'alido, pero no necesariamente son registrados en una base de datos. Permiten llevar una historia de la BD.
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dimensi\'on del tiempo: Tiempo Transaccional}
+\onslide<2->{Registra el per\'iodo de tiempo donde un hecho fue almacenado en la base de datos.\\
+\ \\}
+\onslide<3->{
+Permiten consultas que muestren el estado de la base de datos en un tiempo dado.\\
+\ \\}
+\onslide<4->{
+Est\'a acotado en ambos extremos; la creaci\'on de la base de datos y el tiempo presente.\\
+\ \\}
+\onslide<5->{
+Permiten hacer rollback de los datos.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplo}
+
+\onslide<2->El Se\~nor X nace en Springfield el 12 de Mayo de 1956.\\
+\onslide<2->\begin{center}\includegraphics[width=1.8cm,height=2.3cm]{senorx.jpg}\end{center}
+\onslide<3-> Su padre lo registra el 13 de Mayo de 1956.\\
+\ \\
+\onslide<4-> Se muda a Arroyos Cipreses el 3 de Agosto de 1980, pero olvida registrarse; lo hace el 16 de Agosto del mismo a\~no.\\
+\ \\
+\onslide<5-> Muere el 20 de Abril de 2004.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplo: no temporal}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Nombre & ViveEn\\
+\hline
+Se\~nor X & Springfield\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Update}\end{small}\\
+\begin{tabular}{|c|c|}
+\hline
+Nombre & ViveEn\\
+\hline
+Se\~nor X & Arroyos Cipreses\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Delete}\end{small}\\
+\begin{tabular}{|c|c|}
+\hline
+Nombre & ViveEn\\
+\hline
+\sout{Se\~nor X} & \sout{Arroyos Cipreses}\\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplo: Tiempo V\'alido}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Valid-From & Valid-To\\
+\hline
+Se\~nor X & Springfield & 12-May-1956 & $\infty$\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Update}\end{small}\\
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Valid-From & Valid-To\\
+\hline
+Se\~nor X & Springfield & 12-May-1956 & 2-Aug-1980\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Insert}\end{small}\\
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Valid-From & Valid-To\\
+\hline
+Se\~nor X & Springfield & 12-May-1956 & 2-Aug-1980\\
+\hline
+Se\~nor X & Arroyos Cipreses & 3-Aug-1980 & $\infty$\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Update}\end{small}\\
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Valid-From & Valid-To\\
+\hline
+Se\~nor X & Springfield & 12-May-1956 & 2-Aug-1980\\
+\hline
+Se\~nor X & Arroyos Cipreses & 3-Aug-1980 & 20-Apr-2004\\
+\hline
+\end{tabular}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplo: Tiempo Transaccional}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Transaction-From & Transaction-To\\
+\hline
+Se\~nor X & Springfield & 13-May-1956 & $\infty$\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Insert}\end{small}\\
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Transaction-From & Transaction-To\\
+\hline
+Se\~nor X & Springfield & 13-May-1956 & 16-Aug-1980\\
+\hline
+Se\~nor X & Arroyos Cipreses & 16-Aug-1980 & $\infty$\\
+\hline
+\end{tabular}
+\\
+\ \\
+\begin{Huge}{$\Downarrow$}\end{Huge}\begin{small}{Update}\end{small}\\
+\begin{tabular}{|c|c|c|c|}
+\hline
+Nombre & ViveEn & Transaction-From & Transaction-To\\
+\hline
+Se\~nor X & Springfield & 13-May-1956 & 16-Aug-1980\\
+\hline
+Se\~nor X & Arroyos Cipreses & 16-Aug-1980 & 20-Apr-2004\\
+\hline
+\end{tabular}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Base de Datos Bi-Temporal}
+\onslide<2->{Incluyen ambos tiempos, V\'alido y Transaccional.\\}
+\ \\
+\onslide<3->{
+Proveen informaci\'on \textbf{hist\'orica} y permiten hacer \textbf{rollback} de los datos.\\
+\ \\
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\tiny Nombre & \tiny ViveEn & \tiny Valid-From & \tiny Valid-To & \tiny Transaction-From & \tiny Transaction-To\\
+\hline
+\tiny Se\~nor X & \tiny Springfield & \tiny 12-May-1956 & \tiny $\infty$ & \tiny 13-May-1956 & \tiny 16-Aug-1980\\
+\hline
+\tiny Se\~nor X & \tiny Springfield & \tiny 12-May-1956 & \tiny 2-Aug-1980 & \tiny 16-Aug-1980 & \tiny $\infty$\\
+\hline
+\tiny Se\~nor X & \tiny Arroyos Cipreses & \tiny 3-Aug-1980 & \tiny $\infty$ & \tiny 16-Aug-1980 & \tiny 20-Apr-2004\\
+\hline
+\tiny Se\~nor X & \tiny Arroyos Cipreses & \tiny 3-Aug-1980 & \tiny 20-Apr-2004 & \tiny 20-Apr-2004 & \tiny $\infty$\\
+\hline
+\end{tabular}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Representaci\'on del tiempo v\'alido y transaccional}
+\begin{center}\includegraphics[width=8cm,height=4cm]{medium.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extensiones Temporales}
+\onslide<2->{Hay dos formas de extender el modelo relacional para especificar requisitos temporales.\\
+\ \\}
+\onslide<3->{
+La forma mostrada en los ejemplos antes mencionados se denomina \textbf{marcaje de tuplas}.\\
+\ \\}
+\onslide<4->{
+$(attr_{1},...,attr_{n}) \rightarrow (attr_{1},...,attr_{n},temp\_attr_{1},...,temp\_attr_{m})$\\
+\ \\}
+\onslide<5->{
+La forma restante es denominada \textbf{marcaje de atributos} y usa atributos multivaluados.\\
+\ \\}
+\onslide<6->{
+Al mismo tiempo que permite la correspondencia 1:1 entre entidades y hechos reales, dificulta las actualizaciones y no cumple la 1NF.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Operadores de Allen}
+\onslide<2->{Necesitamos una forma de comparar datos temporales.\\}
+\ \\
+\onslide<3->{
+Allen (1983) propone un conjunto de operadores temporales l\'ogicos para comparar intervalos de tiempo.\\
+\ \\}
+\onslide<4->{
+El operador es una funci\'on de tipo: $I_{t} \times I_{t} \rightarrow \lbrace True, False \rbrace$.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algunos operadores temporales (1)}
+\begin{center}
+\begin{tabular}{cc}
+$I_{1}$\ EQUALS\ $I_{2}$ & \includegraphics[width=5cm,height=2cm]{equals.jpg}\\
+$I_{1}$\ BEFORE\ $I_{2}$ & \includegraphics[width=5cm,height=2cm]{before.jpg}\\
+$I_{1}$\ AFTER\ $I_{2}$ & \includegraphics[width=5cm,height=2cm]{after.jpg}\\
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algunos operadores temporales (2)}
+\begin{center}
+\begin{tabular}{cc}
+$I_{1}$\ BEGINS\ $I_{2}$ & \includegraphics[width=5cm,height=2cm]{begin.jpg}\\
+$I_{1}$\ INCLUDES\ $I_{2}$ & \includegraphics[width=5cm,height=2cm]{include.jpg}\\
+$I_{2}$\ MEETS\ $I_{1}$ & \includegraphics[width=5cm,height=2cm]{meets.jpg}\\
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modelo relacional temporal}
+\onslide<2->{
+El modelo relacional temporal incorpora la sem\'antica temporal en el modelo relacional.\\
+\ \\}
+\onslide<3->{
+Utiliza marcaje de tuplas.\\
+\ \\}
+\onslide<4->{
+Algunas de las caracter\'isticas que debe ofrecer son:}
+\begin{itemize}
+\onslide<5->{
+\item Un tipo de datos para per\'iodos de tiempo, incluyendo la habilidad de representar per\'iodos infinitos (sin fin).}
+\onslide<6->{
+\item Soporte para tiempo v\'alido, transaccional y tablas bitemporales.}
+\onslide<7->{
+\item Tiempo transaccional controlado por el sistema.}
+\onslide<8->{
+\item Consultas temporales.}
+\onslide<9->{
+\item Predicados y operadores que act\'uen sobre intervalos de tiempo.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lenguajes de consulta temporales}
+\onslide<2->{Una base de datos temporales es un repositorio de informaci\'on temporal.\\
+\ \\}
+\onslide<3->{
+Un lenguaje de consulta temporal es cualquier lenguaje de consulta para bases de datos temporales.\\
+\ \\}
+\onslide<4->{
+Las propiedades de un lenguaje de consulta temporal son:}
+\begin{itemize}
+\onslide<5->{
+\item Sem\'antica declarativa}
+\onslide<6->{
+\item Implementaci\'on eficiente}
+\onslide<7->{
+\item Independencia en la representaci\'on}
+\onslide<8->{
+\item Expresividad de la consulta}
+\end{itemize}
+\ \\
+\onslide<9->{
+Algunos ejemplos importantes son: TSQL, TQuel, HRDM, Backlog, etc\'etera. Muchos otros son derivados de estos.}
+\end{frame}
+
+\begin{frame}
+\frametitle{DBMS Temporal}
+%Los DBMS comerciales como Oracle, Sybase, Informix y O2 no son considerados DBMS Temporales ya que no soportan la administraci\'on de datos temporales.\\
+%\ \\
+\onslide<2->{Los DBMS Temporales deben respaldar un lenguaje de definici\'on de datos temporales, un sistema de restricciones temporales, un lenguaje de manipulaci\'on de datos y un lenguaje de consultas temporales.\\}
+\ \\
+\onslide<3->{
+Algunos ejemplos de DBMS Temporales son: TimeDB, Oracle Workspace Manager, PostgreSQL, IBM DB2, etc\'etera.} 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf{HISTORIA Y ESTANDARIZACI\'ON}\\
+\ \\
+Hacia un modelo de datos temporal
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Hacia un modelo de datos temporal}
+\onslide<2->{
+La comunidad de Bases de Datos Temporales fue prol\'ifica en la producci\'on de modelos de datos temporales y lenguajes de consulta.\\}
+\ \\
+\onslide<3->{
+En los \'ultimos 20 a\~nos, docenas de modelos relacionales de datos temporales fueron propuestos.\\
+\ \\}
+\onslide<4->{
+Richard Snodgrass propuso en 1992 que la comunidad de BDT realice extensiones a SQL.\\}
+\end{frame}
+
+\begin{frame}
+\frametitle{Proceso de estandarizaci\'on de SQL}
+\onslide<2->{INCITS(ANSI) DM32.2 responsable del est\'andar SQL en USA.\\
+\ \\}
+\onslide<3->{
+ISO/IEC JTC 1/SC 32 Data Management and Interchange/WG 3 es un comit\'e responsable del est\'andar SQL internacional.\\
+\ \\}
+\onslide<4->{
+Muchas de las capacidades del est\'andar SQL fueron originadas en USA.\\
+\ \\}
+\onslide<5->{
+La aprobaci\'on tiene un ciclo de 3 a 5 a\~nos.\\
+\ \\}
+\onslide<6->{
+7 versiones del Standard SQL:\\
+\ \ \ \ 86(SQL-87), 89, 92(SQL2), SQL:1999(SQL3), SQL:2003, SQL:2008, SQL:2011}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL Temporal: primer intento (1995-2001)}
+\onslide<2->{X3H2(ahora DM32.2) y WG 3 aprobaron el trabajo SQL/Temporal en 1995.\\
+\ \\}
+\onslide<3->{
+USA fue el primero en hacer la propuesta, a\~nadiendo nuevas extensiones a SQL, basadas en el trabajo de Rick Snodgrass.\\}
+\ \\
+\onslide<4->{
+La propuesta de USA estaba basada en TSQL2, una extensi\'on de SQL-92.\\
+\ \\}
+\onslide<5->{
+UK lanz\'o una propuesta similar. Conflictos entre las propuestas de USA y UK, terminaron en que ANSI e ISO decidieran en cancelar SQL/Temporal en 2001.}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL Temporal: segundo intento (2008-2011)}
+\onslide<2->{En 2008, un segundo intento se hizo presente. Empez\'o con la aceptaci\'on de la propuesta "system-versioned tables" llevada a cabo por INCITS DM32.2 y ISO/IEC JTC1 SC32 WG3.\\
+\ \\}
+\onslide<3->{
+No se resucit\'o SQL/Temporal, sino se a\~nadi\'o la propuesta a SQL/Foundation.\\
+\ \\}
+\onslide<4->{
+Otra caracter\'istica es "application-time period tables".\\}
+\ \\
+\onslide<5->{
+Las caracter\'isticas temporales en SQL:2011 est\'an inspiradas en las anteriores propuestas hechas en SQL/Temporal, pero con una sintaxis un poco diferente.}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL-92}
+\onslide<2->{
+Inclusi\'on de tipos de datos temporales:\\}
+\onslide<3->{
+\begin{itemize}
+\item DATE (10 posiciones) = YEAR, MONTH, DAY (yyyy-mm-dd)
+\item TIME (8 posiciones) = HOUR, MINUTE, SECOND (hh:mm:ss)
+\item TIMESTAMP (DATE, TIME, fracciones de segundo y desplazamiento de acuerdo al huso horario est\'andar)
+\item INTERVAL\\
+\ \ \ Per\'iodo de tiempo. Para incrementar/decrementar el valor actual de una fecha, hora o marca de tiempo.\\
+\ \ \ Se califica con YEAR/MONTH o DAY/TIME para indicar su naturaleza.
+\end{itemize}}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2 (1)}
+\onslide<2->{Es un lenguaje de consulta temporal consensuado por un comit\'e de grupos de investigaci\'on en bases de datos temporales.\\
+\ \\}
+\onslide<3->{
+Apareci\'o como una extensi\'on para SQL-92.\\
+\ \\}
+\onslide<4->{
+La especificaci\'on incluye ideas y conceptos de Tiempo V\'alido, Tiempo Transaccional y Tablas Bitemporales.\\
+\ \\}
+\onslide<5->{
+Tambi\'en conocido como extensiones ANSI X3.135.-1992 e ISO/IEC 9075:1992.}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2 (2)}
+\onslide<1->{Incluye cuatro tipos de marcas de tiempo v\'alido: intervalos, instantes, per\'iodos y elementos.\\}
+\ \\
+\onslide<2->{Asociadas a estas marcas existen tres categor\'ias de operadores: extractores, constructores y comparadores.\\
+\ \\}
+\onslide<3->{
+Tiene una variable denominada NOW que indica el momento actual $\rightarrow$ tiempo de referencia.\\}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2: Extractores}
+\begin{tabular}{|l|l|}
+\hline
+Operaci\'on & Operador\\
+\hline
+\hline
+Extractor de eventos & BEGIN(event)\ END(period)\ BEGIN(element)\\
+& END(event)\ END(period)\ END(element)\\
+\hline
+Extractor de per\'iodos & FIRST(period\ FIRST(element)\\
+& LAST(period)\ LAST(element)\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2: Constructores}
+\begin{tabular}{|l|l|}
+\hline
+Operaci\'on & Operador\\
+\hline
+\hline
+Constructor de eventos & FIRST(event,\ event)\ \\
+& LAST(event,\ event)\\
+\hline
+Constructor de per\'iodos & PERIOD(event,\ event)\\
+& INTERSECT(period,\ period)\\
+\hline
+Constructor de elementos & INTERSECT(element,\ element)\\
+& element $+$ element\\
+& element $-$ element\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2: Comparadores}
+\begin{tabular}{|l|l|}
+\hline
+Operaci\'on & Operador\\
+\hline
+\hline
+Comparador de eventos & event PRECEDES event\\
+& event $=$ event\\
+& event OVERLAPS event\\
+& event MEETS event\\
+& event CONTAINS event\\
+\hline
+Comparador de per\'iodos & period PRECEDES period\\
+& period $=$ period\\
+& period OVERLAPS period\\
+& period MEETS period\\
+& period CONTAINS period\\
+\hline
+Comparador de elementos & element PRECEDES element\\
+& element $=$ element\\
+& element OVERLAPS element\\
+& element CONTAINS element\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{TSQL2: Operadores de Allen}
+\begin{small}
+\begin{tabular}{| c | c | c |}
+\hline
+Operador de Allen & Operador TSQL2\\
+\hline
+\hline
+a BEFORE b & a PRECEDES b\\
+\hline
+a EQUAL b & a $=$ b\\
+\hline
+a OVERLAPS b & a OVERLAPS b AND \\ & END(a) PRECEDES END(b)\\
+\hline
+a MEETS b & END(a) = BEGIN(b)\\
+\hline
+a DURING b & BEGIN(b) PRECEDES BEGIN(a)\\
+& AND\\
+& END(a) PRECEDES END(b)\\
+\hline
+a START b & BEGIN(a) = BEGIN(b)\\
+& AND\\
+& END(a) PRECEDES END(b)\\
+\hline
+a FINISH b & BEGIN(b) PRECEDES BEGIN(a)\\
+& AND\\
+& END(a) = END(b)\\
+\hline
+\end{tabular}
+\end{small}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo V\'alido (1)}
+$>$\ CREATE TABLE empleado(ename VARCHAR(12), eno INTEGER PRIMARY KEY, cumple DATE);\\
+$>$\ CREATE TABLE salario(eno INTEGER REFERENCES empleado(eno), sueldo INTEGER);\\
+\ \\
+$>$\ INSERT INTO empleado\\
+\ \ \ \ \ \ VALUES('Homero', 1, DATE '1955-03-21');\\
+$>$\ INSERT INTO empleado\\
+\ \ \ \ \ \ VALUES('Lenny', 2, '1956-09-18');\\
+\ \\
+$>$\ INSERT INTO salario VALUES(1, 2000);\\
+$>$\ INSERT INTO salario VALUES(2, 4000);\\
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo V\'alido (2)}
+\begin{small}
+$>$\ ALTER TABLE salario ADD VALIDTIME PERIOD(DATE);\\
+$>$\ ALTER TABLE empleado ADD VALIDTIME PERIOD(DATE);\\
+\ \\
+$>$\ INSERT INTO empleado\\
+\ \ \ \ \ \ VALUES('Carl', 3, DATE '1955-08-10');\\
+$>$\ INSERT INTO salario VALUES(3, 3500);\\
+$>$\ COMMIT;
+\ \\
+\begin{center}
+\begin{tabular}{|c|c|c||c|}
+\hline
+ename & eno & cumple & V\'alido\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Carl & 3 & 1955-08-10 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\begin{tabular}{|c|c||c|}
+\hline
+eno & sueldo & V\'alido\\
+\hline
+1 & 2000 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+2 & 4000 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+3 & 3500 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{center}
+\end{small}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo V\'alido (3)}
+\textbf{Cambiar el nombre de 'Carl' por 'Carlos'.}\\
+\ \\
+$>$\ VALIDTIME UPDATE empleado\\
+\ \ \ \ \ \ SET ename = 'Carlos'\\
+\ \ \ \ WHERE ename = 'Carl';\\
+$>$\ COMMIT;\\
+\ \\
+\begin{center}
+\begin{tabular}{|c|c|c||c|}
+\hline
+ename & eno & cumple & V\'alido\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Carlos & 3 & 1955-08-10 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo V\'alido (4)}
+\textbf{?`Qui\'en percibi\'o un aumento de sueldo?}\\
+\ \\
+$>$\ UPDATE salario\\
+\ \ \ \ \ \ SET sueldo = 1.05 * amount\\
+\ \ \ \ WHERE eno = 3;\\
+$>$\ COMMIT;\\
+\ \\
+$>$\ NONSEQUENCED VALIDTIME SELECT ename\\
+\ \ \ FROM empleado AS E, salario AS S1, salario AS S2\\
+\ \ \ WHERE E.eno = S1.eno AND E.eno = S2.eno\\
+\ \ \ \ \ AND S1.sueldo $<$ S2.sueldo AND \\
+\ \ \ \ \ \ \ \ VALIDTIME(S1) MEETS VALIDTIME(S2);\\
+\begin{center}
+\begin{tabular}{|c|}
+\hline
+ename\\
+\hline
+Carlos\\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo Transaccional (1)}
+\begin{center}
+\begin{tabular}{|c|c|c||c|}
+\hline
+ename & eno & cumple & V\'alido\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+Carlos & 3 & 1955-08-10 & [1995-02-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{center}
+$>$\ ALTER TABLE empleado ADD TRANSACTIONTIME;\\
+$>$\ COMMIT;
+\begin{center}
+\begin{tiny}
+\begin{tabular}{|c|c|c||c|c|}
+\hline
+ename & eno & cumple & V\'alido & Transacci\'on\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+Carlos & 3 & 1955-08-10 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{tiny}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo Transaccional (2)}
+$>$\ UPDATE empleado\\
+\ \ \ \ SET ename = `Homero J.`\\
+\ \ \ \ WHERE ename = `Homero`;\\
+$>$\ COMMIT;
+\begin{center}
+\begin{tiny}
+\begin{tabular}{|c|c|c||c|c|}
+\hline
+ename & eno & cumple & V\'alido & Transacci\'on\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 2014-04-23)\\
+\hline
+Homero J. & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [2014-04-23\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+Carlos & 3 & 1955-08-10 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{tiny}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Ejemplos de consulta TSQL2: Tiempo Transaccional (3)}
+\textbf{?`Cu\'ando trabaj\'o alg\'un empleado por m\'as de seis meses?}\\
+\begin{center}
+\begin{tiny}
+\begin{tabular}{|c|c|c||c|c|}
+\hline
+ename & eno & cumple & V\'alido & Transacci\'on\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 2014-04-23)\\
+\hline
+Homero J. & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [2014-04-23\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+Carlos & 3 & 1955-08-10 & [1995-02-01\ -\ 1995-03-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{tiny}
+\end{center}
+\ \\
+\begin{small}$>$\ VALIDTIME AND TRANSACTIONTIME SELECT ename, eno\\
+\ \ \ \ FROM empleado\\
+\ \ \ \ WHERE INTERVAL(VALIDTIME(empleado) MONTH) $>$\\
+\ \ \ \ \ \ \ \ INTERVAL `6` MONTH;\\
+\ \\
+\end{small}
+\begin{center}
+\begin{tiny}
+\begin{tabular}{|c|c|c||c|c|}
+\hline
+ename & eno & cumple & V\'alido & Transacci\'on\\
+\hline
+Homero & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 2014-04-23)\\
+\hline
+Homero J. & 1 & 1955-03-21 & [1995-02-01\ -\ 9999-12-31) & [2014-04-23\ -\ 9999-12-31)\\
+\hline
+Lenny & 2 & 1956-09-18 & [1995-02-01\ -\ 9999-12-31) & [1995-07-01\ -\ 9999-12-31)\\
+\hline
+\end{tabular}
+\end{tiny}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\textbf{ESTADO DEL ARTE}\\
+\ \\
+Las BDT en la actualidad
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tipos de soluciones disponibles}
+\onslide<2->{
+Actualmente se pueden manipular los datos temporales de las siguientes formas:}
+\begin{itemize}
+\onslide<3->{
+\item Usar un tipo de datos temporal integrado al DBMS y brindar soporte temporal con aplicaciones.}
+\onslide<4->{
+\item Implementar un tipo de dato abstracto para el tiempo.}
+\onslide<5->{
+\item Extender el modelo de datos no temporal a uno temporal.}
+\onslide<6->{
+\item Generalizar un modelo de datos no temporal en uno temporal.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL:2011 (1)}
+\onslide<2->{El tiempo transaccional es manejado con \textit{system-versioned tables}, que contienen el per\'iodo de tiempo del sistema, y el tiempo v\'alido es manejado con tablas que contienen \textit{application-time period}.\\}
+\ \\
+\onslide<3->{
+transaction time $\rightarrow$ system time\\
+valid time $\rightarrow$ application time\\
+\ \\}
+\onslide<4->{
+Las t\'ecnicas e ideas de TSQL se tuvieron en cuenta por el comit\'e, pero las extensiones sint\'acticas que se hicieron difirieron considerablemente de aquellas propuestas en TSQL.
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL:2011 Application-Time tables}
+\onslide<2->{El tipo de datos PERIOD para intervalos de tiempo, sigue no disponible. Es simulado usando pares de instantes (con la sem\'antica [cerrado,abierto)).\\
+\ \\}
+\onslide<3->{
+Application-time period tables son tablas que contienen una cl\'ausula PERIOD, con un nombre del per\'iodo definido por el usuario.\\
+\ \\}
+\onslide<4->{
+Estas tablas contienen tambi\'en dos columnas adicionales para almacenar el tiempo de inicio y fin de un per\'iodo de un dato temporal.}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL:2011 System-Versioned tables}
+\onslide<2->{Son tablas que contienen una cl\'ausula PERIOD con un nombre de per\'iodo predefinido (SYSTEM\_TIME).\\}
+\ \\
+\onslide<3->{
+Contienen dos columnas adicionales que se refieren a el inicio y fin de una transacci\'on.\\
+\ \\}
+\onslide<4->{
+Ambos valores son seteados por el sistema.\\
+\ \\}
+\onslide<5->{
+Preservan las versiones antiguas de las filas.}
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL:2011 (2)}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+emp\_name & dept\_id & start\_date & end\_date\\
+\hline
+John & M24 & 1998-01-31 & 9999-12-31\\
+\hline
+John & J13 & 1995-11-15 & 1998-01-31\\
+\hline
+Tracy & K25 & 1996-01-01 & 2000-03-31\\
+\hline
+\end{tabular}\\
+\end{center}
+\ \\
+
+\textbf{?`En cu\'al departamento estuvo John el 1 de Diciembre de 1997?}\\
+\ \\
+SELECT dept\_id\\
+FROM empleados\\
+WHERE emp\_name = 'John' AND start\_date $\leq$ DATE '1997-12-01' AND end\_date $>$ DATE '1997-12-01';
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{SQL:2011 (3)}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+emp\_name & dept\_id & start\_date & end\_date\\
+\hline
+John & M24 & 1998-01-31 & 9999-12-31\\
+\hline
+John & J13 & 1995-11-15 & 1998-01-31\\
+\hline
+Tracy & K25 & 1996-01-01 & 2000-03-31\\
+\hline
+\end{tabular}\\
+\end{center}
+\ \\
+
+\textbf{?`En que departamento est\'a John ahora?}\\
+\ \\
+SELECT dept\_id\\
+FROM empleados\\
+WHERE emp\_name = 'John' AND start\_date $\leq$ CURRENT\_DATE AND end\_date $>$ CURRENT\_DATE;
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{SQL:2011 (4)}
+\textbf{Se borra la 3 fila el 16/4/2014:}\\
+\ \\
+DELETE FROM empleados\\
+WHERE emp\_name = 'Tracy';
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+emp\_name & dept\_id & system\_start & system\_end\\
+\hline
+John & M24 & 1998-01-31 & 9999-12-31\\
+\hline
+John & J13 & 1995-11-15 & 1998-01-31\\
+\hline
+Tracy & K25 & 1995-11-15 & 2014-04-16\\
+\hline
+\end{tabular}\\
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{SQL:2011 vs TSQL}
+\begin{tabular}{|c|c|}
+\hline
+TSQL & SQL:2011\\
+\hline
+\textbf{valid} time & \textbf{application} time\\
+\textbf{transaction} time & \textbf{system} time\\
+\hline
+timestamping & versioning\\
+\hline
+\textbf{validtime} table & \textbf{application time period} table\\
+\textbf{transactiontime} table & \textbf{system-versioned} table\\
+\textbf{bitemporal table} & \textbf{system-versioned}\\
+& \textbf{application time period} table\\
+\hline
+
+\end{tabular}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{TimeDB}
+\onslide<2->{
+TimeDB es un DBMS Bitemporal basado en SQL.\\
+\ \\}
+\onslide<3->{
+Soporta un lenguaje de consulta, un lenguaje de manipulaci\'on de datos y un lenguaje de definici\'on de datos.\\}
+\ \\
+\onslide<4->{
+TimeDB brinda ATSQL2, un lenguaje de consulta basado en TSQL2, ChronoLog y Bitemporal ChronoLog.\\
+\ \\}
+\onslide<5->{
+Manipula los datos temporales buscando extender el modelo de datos relacional a uno temporal.\\
+\ \\}
+\onslide<6->{
+Traduce sentencias TSQL en sentencias SQL est\'andar para luego ser ejecutadas en DBMS como Oracle, Sybase, etc\'etera.}
+\end{frame}
+
+\begin{frame}
+\frametitle{TimeDB: TDDL}
+\onslide<2->{En TimeDB, una tabla bitemporal puede crearse de esta manera:\\}
+\ \\
+\onslide<3->{
+CREATE TABLE empleados (EmpID INTEGER, Name CHAR(30), Department CHAR(40),\\
+Salary INTEGER)\\
+AS VALIDTIME AND TRANSACTIONTIME;\\}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{TimeDB: TDML}
+\onslide<2->{
+Las siguientes sentencias insertan datos temporales a una tabla:\\}
+\ \\
+\onslide<3->{
+VALIDTIME PERIOD '1985-1990'\\
+INSERT INTO empleados VALUES (10,'John','Research',11000);\\
+\ \\
+VALIDTIME PERIOD '1990-1993'\\
+INSERT INTO empleados VALUES (10,'John','Sales',11000);\\
+\ \\
+VALIDTIME PERIOD '1993-forever'\\
+INSERT INTO empleados VALUES (10,'John','Sales',12000);\\
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{TimeDB: TQL}
+\onslide<2->{Para hacer consultas:\\}
+\ \\
+\onslide<3->{
+VALIDTIME\\
+SELECT * FROM empleados;\\
+\ \\
+TRANSACTIONTIME\\
+SELECT * FROM empleados;\\
+\ \\
+VALIDTIME AND TRANSACTIONTIME\\
+SELECT * FROM empleados;}
+\end{frame}
+
+\begin{frame}
+\frametitle{Oracle Workspace Manager (1)}
+\onslide<2->{Es una herramienta de Oracle Database que brinda a los desarrolladores la capacidad de manejar distintas versiones temporales de la base de datos.\\
+\ \\}
+\onslide<3->{
+Se puede habilitar el soporte de tiempo v\'alido al momento de creaci\'on de una tabla:\\}
+\begin{tiny}
+\begin{itemize}
+\onslide<4->{\item Crear la tabla de empleados y sus salarios:\\
+\ \ CREATE TABLE empleados (\\
+\ \ \ \ \ name VARCHAR(16) PRIMARY KEY,\\
+\ \ \ \ \ salary NUMBER\\
+\ \ );\\}
+\onslide<5->{
+\item Versionar la tabla. Especificar TRUE para el soporte de tiempo v\'alido:\\
+EXECUTE DBMS\_WM.EnableVersioning('empleados','VIEW\_WO\_OVERWRITE',FALSE,TRUE);
+}
+\onslide<6->{
+\item Insertar las filas:\\
+\ \ INSERT INTO empleados VALUES(\\
+\ \ \ \ 'Adams',\\
+\ \ \ \ 30000,\\
+\ \ \ \ WMSYS.WM\_PERIOD(TO\_DATE('01-01-1990','MM-DD-YYYY'),\\
+\ \ \ \ \ \ \ \ \ \ \ \ TO\_DATE('01-01-2005','MM-DD-YYYY'))\\}
+\end{itemize}
+\end{tiny}
+\end{frame}
+
+\begin{frame}
+\frametitle{Oracle Workspace Manager (2)}
+\onslide<2->{El tipo de datos WM\_PERIOD es usado para especificar el rango del tiempo v\'alido.\\
+\ \\}
+\onslide<3->{
+Las constantes del tiempo v\'alido son:\\
+DBMS\_WM.MIN\_TIME $\approx$ 01-Jan-(-4712)\\
+DBMS\_WM.MAX\_TIME $\approx$ 31-Dec-9999\\
+DBMS\_WM.UNTIL\_CHANGED es un TIMESTAMP que se comporta como MAX\_TIME hasta que es modificado.\\
+\ \\}
+\onslide<4->{
+Algunos operadores:\\
+WM\_OVERLAPS,\ WM\_CONTAINS,\ WM\_MEETS,\ WM\_EQUALS,\ WM\_INTERSECTION, etc\'etera.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bibliograf\'ia}
+\begin{itemize}
+\item T\'opicos Avanzados de Bases de Datos. Cristina Bender, Claudia Deco.
+\item Temporal Databases. Richard T. Snodgrass.
+\item Temporal Query Languages: a Survey. Jan Chomicki.
+\item Temporal features in SQL:2011. Krishna Kulknarni.
+\item Extensions to SQL for Historical Databases. L. Sarda.
+\item Introduction to Temporal Database Research. Christian S. Jensen.
+\end{itemize}
+\end{frame}
+\end{document}

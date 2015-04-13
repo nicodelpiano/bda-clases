@@ -1,0 +1,45 @@
+\documentclass[a4paper,12pt,oneside]{report}
+\usepackage[spanish,USenglish]{babel} % espanol, ingles
+\usepackage{amsmath,amssymb}
+\usepackage{listings}
+\usepackage{latexsym}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage{graphics}
+\usepackage{qtree}
+\usepackage{url}
+\usepackage{array}
+\usepackage{float}
+\usepackage[top=1in,bottom=1in,left=1.25in,right=1.25in]{geometry}
+\bibliographystyle{ieeetr}
+\title{Bases de Datos Temporales, Espaciales y Espacio-Temporales}
+\date{\today}
+\author{Nicol\'as Del Piano}
+\date{}
+\newcommand{\mychapter}[2]{
+    \setcounter{chapter}{#1}
+    \setcounter{section}{0}
+    \chapter*{#2}
+    \addcontentsline{toc}{chapter}{#2}
+}
+\begin{document}
+\selectlanguage{spanish}
+\maketitle
+\tableofcontents
+\newpage
+
+\mychapter{0}{Res\'umen}
+Este trabajo presenta una introducci\'on hacia las Bases de Datos Temporales, Espaciales y Espacio-Temporales. Las Bases de Datos Temporales (\textit{temporal Databases}) est\'an dise\~nadas para la captura de informaci\'on que var\'ia en el tiempo. Las Bases de Datos Espaciales (\textit{Spatial Databases}) fueron concebidas por la necesidad de registrar el cambio geogr\'afico y f\'isico de cierta informaci\'on. Por \'ultimo, las Bases de Datos Espacio-Temporales (\textit{Spatio-Temporal Databases}) son el resultado de la uni\'on de las capacidades y propiedades ofrecidas por ambos tipos de Bases de Datos. Primero se presentar\'an conceptos de Bases de Datos cl\'asicas, para luego abordar m\'as claramente los temas centrales de esta monograf\'ia. El segundo cap\'itulo presenta de una manera detallada las Bases de Datos Temporales, el tercero lo hace para las Espaciales, y el cuarto para las Espacio-Temporales. Por \'ultimo se abordan t\'opicos generales relacionados con estos tipos de Bases de Datos.
+\mychapter{1}{Introducci\'on}
+Hoy en d\'ia, la cantidad de informaci\'on que manejan las corporaciones y empresas es gigantesca. Por esta raz\'on, es necesario el uso de una herramienta que provea una forma de gestionar adecuadamente esta informaci\'on. Este es el prop\'osito de las Bases de Datos: brindar al usuario una forma de controlar el acceso, almacenamiento y administraci\'on de los datos de la entidad en cuesti\'on.\\
+Con la aparici\'on de nuevas tecnolog\'ias, el surgimiento de nuevas necesidades fue inevitable, implicando que las Bases de Datos Relacionales no sean una bala de plata (aunque sean las m\'as usadas actualmente) para resolver todos los problemas de gesti\'on de datos. Surgieron conceptos como Miner\'ia de Datos, Data Warehouse y Big Data: la informaci\'on ya no tiene la misma dimensi\'on que antes. Fue entonces cuando el Modelo Relacional cl\'asico necesitaba extenderse para representar eficientemente datos que var\'ien en tiempo y espacio.\\
+Las Bases de Datos Temporales se encargan del dominio del tiempo y su relaci\'on con los datos, permite analizar la historia y controlar la validez temporal de los mismos. Una gran variedad de aplicaciones del mundo real manejan datos variables en el tiempo: control de inventario, registros m\'edicos, operaciones bancarias, sistemas de informaci\'on geogr\'afica, gesti\'on de reservas, aplicaciones cient\'ificas, etc\'etera. Esta necesidad de referencias temporales justifica la creaci\'on de un modelo de datos temporal.\\
+Las Bases de Datos Espaciales extienden el modelo para representar el dominio espacial, con estructuras que puedan identificar un objeto en el espacio. Deben permitir la descripci\'on de objetos espaciales mediante tres caracter\'isticas: atributos, localizaci\'on y topolog\'ia. Adem\'as deben proveer tipos de datos espaciales para estructurar entidades geom\'etricas en el espacio. Existen diversas \'areas donde la gesti\'on de informaci\'on geom\'etrica, geogr\'afica o espacial es crucial: Sistemas de Informaci\'on Geogr\'afica, Bases de Datos multimedia, im\'agenes satelitales, ciencias ambientales, astronom\'ia.\\
+El objetivo de las Bases de Datos Espacio-Temporales es extender los modelos de informaci\'on espacial para inclu\'ir el tiempo y describir en forma m\'as din\'amica la realidad que se quiere representar. El modelo espacio-temporal abarca aplicaciones demogr\'aficas, ecol\'ogicas, relacionadas con marketing, militares, urban\'isticas y de fen\'omenos naturales, entre otras.\\
+\mychapter{2}{Bases de Datos Relacionales}
+\mychapter{3}{Bases de Datos Temporales}
+\mychapter{4}{Bases de Datos Espaciales}
+\mychapter{5}{Bases de Datos Espacio-Temporales}
+
+%\bibliography{ref.bib}
+\end{document}
