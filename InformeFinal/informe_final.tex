@@ -29,7 +29,7 @@
 \newpage
 
 \mychapter{0}{Res\'umen}
-Este trabajo presenta una introducci\'on hacia las Bases de Datos Temporales, Espaciales y Espacio-Temporales. Las Bases de Datos Temporales (\textit{temporal Databases}) est\'an dise\~nadas para la captura de informaci\'on que var\'ia en el tiempo. Las Bases de Datos Espaciales (\textit{Spatial Databases}) fueron concebidas por la necesidad de registrar el cambio geogr\'afico y f\'isico de cierta informaci\'on. Por \'ultimo, las Bases de Datos Espacio-Temporales (\textit{Spatio-Temporal Databases}) son el resultado de la uni\'on de las capacidades y propiedades ofrecidas por ambos tipos de Bases de Datos. Primero se presentar\'an conceptos de Bases de Datos cl\'asicas, para luego abordar m\'as claramente los temas centrales de esta monograf\'ia. El segundo cap\'itulo presenta de una manera detallada las Bases de Datos Temporales, el tercero lo hace para las Espaciales, y el cuarto para las Espacio-Temporales. Por \'ultimo se abordan t\'opicos generales relacionados con estos tipos de Bases de Datos.
+Este trabajo presenta una introducci\'on hacia las Bases de Datos Temporales, Espaciales y Espacio-Temporales. Las Bases de Datos Temporales (\textit{Temporal Databases}) est\'an dise\~nadas para la captura de informaci\'on que var\'ia en el tiempo. Las Bases de Datos Espaciales (\textit{Spatial Databases}) fueron concebidas por la necesidad de registrar el cambio geogr\'afico y f\'isico de cierta informaci\'on. Por \'ultimo, las Bases de Datos Espacio-Temporales (\textit{Spatio-Temporal Databases}) son el resultado de la uni\'on de las capacidades y propiedades ofrecidas por ambos tipos de Bases de Datos. Primero se presentar\'an conceptos de Bases de Datos cl\'asicas, para luego abordar m\'as claramente los temas centrales de esta monograf\'ia. El segundo cap\'itulo presenta de una manera detallada las Bases de Datos Temporales, el tercero lo hace para las Espaciales, y el cuarto para las Espacio-Temporales. Por \'ultimo se abordan t\'opicos generales relacionados con estos tipos de Bases de Datos.
 \mychapter{1}{Introducci\'on}
 Hoy en d\'ia, la cantidad de informaci\'on que manejan las corporaciones y empresas es gigantesca. Por esta raz\'on, es necesario el uso de una herramienta que provea una forma de gestionar adecuadamente esta informaci\'on. Este es el prop\'osito de las Bases de Datos: brindar al usuario una forma de controlar el acceso, almacenamiento y administraci\'on de los datos de la entidad en cuesti\'on.\\
 Con la aparici\'on de nuevas tecnolog\'ias, el surgimiento de nuevas necesidades fue inevitable, implicando que las Bases de Datos Relacionales no sean una bala de plata (aunque sean las m\'as usadas actualmente) para resolver todos los problemas de gesti\'on de datos. Surgieron conceptos como Miner\'ia de Datos, Data Warehouse y Big Data: la informaci\'on ya no tiene la misma dimensi\'on que antes. Fue entonces cuando el Modelo Relacional cl\'asico necesitaba extenderse para representar eficientemente datos que var\'ien en tiempo y espacio.\\
@@ -38,6 +38,56 @@ Las Bases de Datos Espaciales extienden el modelo para representar el dominio es
 El objetivo de las Bases de Datos Espacio-Temporales es extender los modelos de informaci\'on espacial para inclu\'ir el tiempo y describir en forma m\'as din\'amica la realidad que se quiere representar. El modelo espacio-temporal abarca aplicaciones demogr\'aficas, ecol\'ogicas, relacionadas con marketing, militares, urban\'isticas y de fen\'omenos naturales, entre otras.\\
 \mychapter{2}{Bases de Datos Relacionales}
 \mychapter{3}{Bases de Datos Temporales}
+El tiempo es un aspecto importante para los fen\'omenos del mundo real: los eventos ocurren en momentos de tiempo espec\'ificos.\\
+A veces nos interesa saber con cierta certeza cu\'ando ocurri\'o tal evento, y poder compararlo con otros para obtener informaci\'on de inter\'es.\\
+Muchas de las \'areas donde se aplican las Bases de Datos tienen naturaleza temporal:
+\begin{itemize}
+\item Control de inventario.
+\item Registros m\'edicos.
+\item Sistemas de informaci\'on geogr\'afica.
+\item Operaciones bancarias.
+\item Data Warehousing.
+\item Sistemas de control de reservas (aerol\'ineas, hoteles, etc).
+\item Aplicaciones cient\'ificas.
+\end{itemize}
+\textbf{Relaciones no temporales}\\
+\ \\
+En la Figura 3.1 puede observarse una tabla relacional no temporal.
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.6]{temporal1.png}
+\caption{Tabla relacional no temporal.}
+\end{figure}
+Cada tupla representa un hecho verdadero \textit{ahora}. Solo hay un estado representable de la Base de Datos: \textit{el actual} (\textit{current snapshot}).
+A medida que el tiempo transcurre, los datos se van actualizando y modificando. Con este modelo, perdemos informaci\'on.\\
+Las Bases de Datos convencionales representan el estado de la informaci\'on en un instante de tiempo dado. Aunque la Base de Datos es actualizada, estos cambios son vistos como modificaciones del estado actual y los datos obsoletos son borrados.\\
+Por lo tanto, solo podemos utilizar la informaci\'on actual de la Base de Datos.\\
+Esto genera un problema cuando queremos responder preguntas involucradas a intervalos de tiempo: \textit{?`Cu\'ales empleados percibieron un aumento el mes pasado?}\\
+\ \\
+\textbf{Bases de Datos Temporales: Definici\'on}\\
+\ \\
+Un \textit{DBMS Temporal} es un Sistema de Gesti\'on de Bases de Datos que proporciona herramientas para el manejo y control de Bases de Datos Temporales.\\
+Una \textit{Base de Datos Temporales} es una Base de Datos que tiene dimensi\'on del tiempo a trav\'es del almacenamiento de datos temporales.\\ Proporcionan un marco que mantiene la historia de los cambios que se produjeron en la fuente de datos. Est\'an dise\~nadas para la captura de la informaci\'on que var\'ia en el transcurso del tiempo (puede apreciarse esta relaci\'on en la Figura 3.2).
+\begin{figure}[h]
+\center \includegraphics[scale=0.4]{temporal2.jpg}
+\caption{Relaci\'on tiempo y datos.}
+\end{figure}
+\ \\
+\textbf{Datos Temporales}\\
+\ \\
+Un \textit{Dato Temporal} es un dato convencional al que se le asocia un per\'iodo de tiempo para expresar valores temporales en la Base de Datos.\\
+Este agregado de informaci\'on temporal se denomina \textit{time-stamping}. Al asociar el tiempo con la informaci\'on, es posible almacenar diferentes estados de una base de datos.\\
+\ \\
+\textbf{Dimensi\'on del Tiempo}\\
+\ \\
+Las Bases de Datos Temporales almacenan dos dimensiones de tiempo:
+\begin{itemize}
+\item Tiempo V\'alido
+\item Tiempo Transaccional
+\end{itemize}
+El \textit{Tiempo V\'alido} representa cu\'ando un hecho tiene validez, es decir, es verdadero en el mundo real. Es independiente de si dicho evento fue registrado o no en la Base de Datos. Los Tiempos V\'alidos pueden encontrarse en el pasado, presente o futuro. Una de las caracter\'isticas es que todos los eventos tienen asociado un Tiempo V\'alido, pero no necesariamente son registrados. Adem\'as brindan la capacidad de gestionar la historia de la Base de Datos.\\
+El \textit{Tiempo Transaccional} registra el per\'iodo de tiempo donde un hecho fue almacenado en la Base de Datos. Permiten realizar consultas que muestren el estado de la Base de Datos en un tiempo espec\'ifico. Este tiempo est\'a acotado en ambos extremos; la creaci\'on de la Base de Datos y el tiempo presente, es decir, los Datos Transaccionales viven solamente dentro de la vida de una Base de Datos. Una de las capacidades interesantes es que permiten volver hacia un estado anterior, ya que almacenan datos de las operaciones que se fueron haciendo.\\
+
 \mychapter{4}{Bases de Datos Espaciales}
 \mychapter{5}{Bases de Datos Espacio-Temporales}
 
