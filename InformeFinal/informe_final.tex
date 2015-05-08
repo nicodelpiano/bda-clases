@@ -80,14 +80,20 @@ Este agregado de informaci\'on temporal se denomina \textit{time-stamping}. Al a
 \ \\
 \textbf{Dimensi\'on del Tiempo}\\
 \ \\
+El tiempo es infinito y continuo. Las computadoras no pueden representar informaci\'on continua, de hecho, se aproximan discretamente. As\'i, para representar una noci\'on del tiempo, se lo transforma en un conjunto discreto con una cierta granularidad. Por ejemplo, la sentencia \textit{Homero naci\'o el 12 de Mayo de 1956} tiene una granularidad de d\'ias.// 
 Las Bases de Datos Temporales almacenan dos dimensiones de tiempo:
 \begin{itemize}
 \item Tiempo V\'alido
 \item Tiempo Transaccional
 \end{itemize}
 El \textit{Tiempo V\'alido} representa cu\'ando un hecho tiene validez, es decir, es verdadero en el mundo real. Es independiente de si dicho evento fue registrado o no en la Base de Datos. Los Tiempos V\'alidos pueden encontrarse en el pasado, presente o futuro. Una de las caracter\'isticas es que todos los eventos tienen asociado un Tiempo V\'alido, pero no necesariamente son registrados. Adem\'as brindan la capacidad de gestionar la historia de la Base de Datos.\\
-El \textit{Tiempo Transaccional} registra el per\'iodo de tiempo donde un hecho fue almacenado en la Base de Datos. Permiten realizar consultas que muestren el estado de la Base de Datos en un tiempo espec\'ifico. Este tiempo est\'a acotado en ambos extremos; la creaci\'on de la Base de Datos y el tiempo presente, es decir, los Datos Transaccionales viven solamente dentro de la vida de una Base de Datos. Una de las capacidades interesantes es que permiten volver hacia un estado anterior, ya que almacenan datos de las operaciones que se fueron haciendo.\\
-
+El \textit{Tiempo Transaccional} registra el per\'iodo de tiempo donde un hecho fue almacenado en la Base de Datos. Permiten realizar consultas que muestren el estado de la Base de Datos en un tiempo espec\'ifico. Este tiempo est\'a acotado en ambos extremos; la creaci\'on de la Base de Datos y el tiempo presente, es decir, los Datos Transaccionales viven solamente dentro de la vida de una Base de Datos. Una de las capacidades interesantes es que permiten volver hacia un estado anterior (\textit{roll-back}), ya que almacenan datos de las operaciones que se fueron haciendo.\\
+\ \\
+\textbf{Ejemplo}\\
+\ \\
+\textbf{Base de Datos Bitemporal}\\
+\ \\
+Incluyen ambos tiempos (V\'alido y Transaccional) lo que les permite proveer informaci\'on hist\'orica, a la vez que brindan la capacidad de hacer roll-back de los datos. 
 \mychapter{4}{Bases de Datos Espaciales}
 \mychapter{5}{Bases de Datos Espacio-Temporales}
 
