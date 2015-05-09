@@ -50,8 +50,7 @@ Muchas de las \'areas donde se aplican las Bases de Datos tienen naturaleza temp
 \item Sistemas de control de reservas (aerol\'ineas, hoteles, etc).
 \item Aplicaciones cient\'ificas.
 \end{itemize}
-\textbf{Relaciones no temporales}\\
-\ \\
+\subsubsection*{Relaciones no temporales}
 En la Figura 3.1 puede observarse una tabla relacional no temporal.
 \begin{figure}[h]
 \center
@@ -62,38 +61,50 @@ Cada tupla representa un hecho verdadero \textit{ahora}. Solo hay un estado repr
 A medida que el tiempo transcurre, los datos se van actualizando y modificando. Con este modelo, perdemos informaci\'on.\\
 Las Bases de Datos convencionales representan el estado de la informaci\'on en un instante de tiempo dado. Aunque la Base de Datos es actualizada, estos cambios son vistos como modificaciones del estado actual y los datos obsoletos son borrados.\\
 Por lo tanto, solo podemos utilizar la informaci\'on actual de la Base de Datos.\\
-Esto genera un problema cuando queremos responder preguntas involucradas a intervalos de tiempo: \textit{?`Cu\'ales empleados percibieron un aumento el mes pasado?}\\
-\ \\
-\textbf{Bases de Datos Temporales: Definici\'on}\\
-\ \\
+Esto genera un problema cuando queremos responder preguntas involucradas a intervalos de tiempo: \textit{?`Cu\'ales empleados percibieron un aumento el mes pasado?}
+\subsubsection*{Bases de Datos Temporales: Definici\'on}
 Un \textit{DBMS Temporal} es un Sistema de Gesti\'on de Bases de Datos que proporciona herramientas para el manejo y control de Bases de Datos Temporales.\\
 Una \textit{Base de Datos Temporales} es una Base de Datos que tiene dimensi\'on del tiempo a trav\'es del almacenamiento de datos temporales.\\ Proporcionan un marco que mantiene la historia de los cambios que se produjeron en la fuente de datos. Est\'an dise\~nadas para la captura de la informaci\'on que var\'ia en el transcurso del tiempo (puede apreciarse esta relaci\'on en la Figura 3.2).
 \begin{figure}[h]
 \center \includegraphics[scale=0.4]{temporal2.jpg}
 \caption{Relaci\'on tiempo y datos.}
 \end{figure}
-\ \\
-\textbf{Datos Temporales}\\
-\ \\
+\subsubsection*{Datos Temporales}
 Un \textit{Dato Temporal} es un dato convencional al que se le asocia un per\'iodo de tiempo para expresar valores temporales en la Base de Datos.\\
-Este agregado de informaci\'on temporal se denomina \textit{time-stamping}. Al asociar el tiempo con la informaci\'on, es posible almacenar diferentes estados de una base de datos.\\
-\ \\
-\textbf{Dimensi\'on del Tiempo}\\
-\ \\
-El tiempo es infinito y continuo. Las computadoras no pueden representar informaci\'on continua, de hecho, se aproximan discretamente. As\'i, para representar una noci\'on del tiempo, se lo transforma en un conjunto discreto con una cierta granularidad. Por ejemplo, la sentencia \textit{Homero naci\'o el 12 de Mayo de 1956} tiene una granularidad de d\'ias.// 
+Este agregado de informaci\'on temporal se denomina \textit{time-stamping}. Al asociar el tiempo con la informaci\'on, es posible almacenar diferentes estados de una base de datos.
+\subsubsection*{Dimensi\'on del Tiempo}
+El tiempo es infinito, continuo y multidimensional \cite{snodgrass86}. Las computadoras no pueden representar informaci\'on continua, de hecho, se aproximan discretamente. As\'i, para representar una noci\'on del tiempo, se lo transforma en un conjunto discreto con una cierta granularidad. Por ejemplo, la sentencia \textit{Homero Simpson naci\'o el 12 de Mayo de 1956} tiene una granularidad de d\'ias.\\ 
 Las Bases de Datos Temporales almacenan dos dimensiones de tiempo:
 \begin{itemize}
 \item Tiempo V\'alido
 \item Tiempo Transaccional
 \end{itemize}
-El \textit{Tiempo V\'alido} representa cu\'ando un hecho tiene validez, es decir, es verdadero en el mundo real. Es independiente de si dicho evento fue registrado o no en la Base de Datos. Los Tiempos V\'alidos pueden encontrarse en el pasado, presente o futuro. Una de las caracter\'isticas es que todos los eventos tienen asociado un Tiempo V\'alido, pero no necesariamente son registrados. Adem\'as brindan la capacidad de gestionar la historia de la Base de Datos.\\
+El \textit{Tiempo V\'alido} representa cu\'ando un hecho tiene validez, es decir, es verdadero en el mundo real. El Tiempo V\'alido de un evento es el tiempo de un reloj en el que ese evento ocurri\'o \cite{snodgrass86}. Es independiente de si dicho evento fue registrado o no en la Base de Datos. Los Tiempos V\'alidos pueden encontrarse en el pasado, presente o futuro. Una de las caracter\'isticas es que todos los eventos tienen asociado un Tiempo V\'alido, pero no necesariamente son registrados. Adem\'as brindan la capacidad de gestionar la historia de la Base de Datos.\\
 El \textit{Tiempo Transaccional} registra el per\'iodo de tiempo donde un hecho fue almacenado en la Base de Datos. Permiten realizar consultas que muestren el estado de la Base de Datos en un tiempo espec\'ifico. Este tiempo est\'a acotado en ambos extremos; la creaci\'on de la Base de Datos y el tiempo presente, es decir, los Datos Transaccionales viven solamente dentro de la vida de una Base de Datos. Una de las capacidades interesantes es que permiten volver hacia un estado anterior (\textit{roll-back}), ya que almacenan datos de las operaciones que se fueron haciendo.\\
-\ \\
-\textbf{Ejemplo}\\
-\ \\
-\textbf{Base de Datos Bitemporal}\\
-\ \\
-Incluyen ambos tiempos (V\'alido y Transaccional) lo que les permite proveer informaci\'on hist\'orica, a la vez que brindan la capacidad de hacer roll-back de los datos. 
+Estas dos dimensiones son ortogonales. Un Modelo de Datos que no soporte ninguno de estas dimensiones se denomina \textit{snapshot}, ya que captura solamente una imagen de la Base de Datos. Si se brinda soporte para Tiempo V\'alido, entonces se cuenta con una Modelo de Datos \textit{hist\'orico}, mientras que uno que soporte Tiempo Transaccional solamente se denomina \textit{rollback}. En caso de que ambas dimensiones est\'en soportadas, se denomina \textit{bitemporal}.
+\subsubsection*{Ejemplo}
+\subsubsection*{Base de Datos Bitemporal}
+Incluyen ambos tiempos (V\'alido y Transaccional) lo que les permite proveer informaci\'on hist\'orica, a la vez que brindan la capacidad de hacer roll-back de los datos. En la siguiente figura se puede apreciar un ejemplo:
+\begin{figure}[h]
+\center \includegraphics[scale=0.6]{temporal_bitemporalrel.png}
+\caption{Ejemplo de una relaci\'on bitemporal.}
+\end{figure}
+\subsubsection*{Extensiones Temporales}
+Hay dos formas de extender el modelo relacional para especificar requisitos temporales.\\
+La forma mostrada en los ejemplos antes mencionados se denomina \textbf{marcaje de tuplas}. Este m\'etodo es muy com\'un en el modelo relacional. Se utiliza un atributo especial para indicar la validez de una tupla: se indica \textit{desde} y \textit{hasta} para representar intervalos de tiempo. Una de las desventajas que tiene esta forma es que una entidad puede estar representada por varias tuplas, por lo que no puede lograrse una representaci\'on 1:1 de la realidad lo que podr\'ia generar informaci\'on redundante.\\
+La segunda forma se denomina \textbf{marcaje de atributos} y usa atributos multivaluados. La idea es que la marca de tiempo y la entrada referenciada  se almacenen en el mismo atributo de forma anidada. Al mismo tiempo que permite la correspondencia 1:1 entre entidades y hechos reales, dificulta las actualizaciones y no cumple la 1NF.
+\subsubsection*{Operadores de Allen}
+Necesitamos una forma de comparar datos temporales. Allen (1983) propone un conjunto 	de operadores temporales l\'ogicos para comparar intervalos de tiempo. El operador es una funci\'on de tipo: $I_{t} \times I_{t} \rightarrow \lbrace True, False \rbrace$
+\subsection*{Modelo Relacional Temporal}
+El modelo relacional temporal incorpora la sem\'antica temporal en el modelo relacional utilizando marcaje de tuplas como extensi\'on temporal.\\
+Alguna de las caracter\'isticas que debe ofrecer son:
+\begin{itemize}
+item Un tipo de datos para per\'iodos de tiempo, incluyendo la habilidad de representar per\'iodos infinitos.
+\item Soporte para tiempo v\'alido, transaccional y tablas bitemporales.
+\item Tiempo transaccional controlado por el sistema.
+\item Consultas temporales.
+\item Predicados y operadores que act\'uen sobre intervalos de tiempo.
+\end{itemize} 
 \mychapter{4}{Bases de Datos Espaciales}
 \mychapter{5}{Bases de Datos Espacio-Temporales}
 
