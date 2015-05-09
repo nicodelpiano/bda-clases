@@ -91,20 +91,36 @@ Incluyen ambos tiempos (V\'alido y Transaccional) lo que les permite proveer inf
 \end{figure}
 \subsubsection*{Extensiones Temporales}
 Hay dos formas de extender el modelo relacional para especificar requisitos temporales.\\
-La forma mostrada en los ejemplos antes mencionados se denomina \textbf{marcaje de tuplas}. Este m\'etodo es muy com\'un en el modelo relacional. Se utiliza un atributo especial para indicar la validez de una tupla: se indica \textit{desde} y \textit{hasta} para representar intervalos de tiempo. Una de las desventajas que tiene esta forma es que una entidad puede estar representada por varias tuplas, por lo que no puede lograrse una representaci\'on 1:1 de la realidad lo que podr\'ia generar informaci\'on redundante.\\
+La forma mostrada en los ejemplos antes mencionados se denomina \textbf{marcaje de tuplas}. Este m\'etodo es muy com\'un en el modelo relacional. Se utiliza un atributo especial para indicar la validez de una tupla: se indica \textit{desde} y \textit{hasta} para representar intervalos de tiempo.\\
+\ \\
+$(attr_1, ..., attr_n) \rightarrow (attr_1, ..., attr_n, temp\_attr_1, ..., temp\_attr_m)$\\
+\ \\Una de las desventajas que tiene esta forma es que una entidad puede estar representada por varias tuplas, por lo que no puede lograrse una representaci\'on 1:1 de la realidad lo que podr\'ia generar informaci\'on redundante.\\
 La segunda forma se denomina \textbf{marcaje de atributos} y usa atributos multivaluados. La idea es que la marca de tiempo y la entrada referenciada  se almacenen en el mismo atributo de forma anidada. Al mismo tiempo que permite la correspondencia 1:1 entre entidades y hechos reales, dificulta las actualizaciones y no cumple la 1NF.
 \subsubsection*{Operadores de Allen}
 Necesitamos una forma de comparar datos temporales. Allen (1983) propone un conjunto 	de operadores temporales l\'ogicos para comparar intervalos de tiempo. El operador es una funci\'on de tipo: $I_{t} \times I_{t} \rightarrow \lbrace True, False \rbrace$
-\subsection*{Modelo Relacional Temporal}
+\subsubsection*{Modelo Relacional Temporal}
 El modelo relacional temporal incorpora la sem\'antica temporal en el modelo relacional utilizando marcaje de tuplas como extensi\'on temporal.\\
 Alguna de las caracter\'isticas que debe ofrecer son:
 \begin{itemize}
-item Un tipo de datos para per\'iodos de tiempo, incluyendo la habilidad de representar per\'iodos infinitos.
+\item Un tipo de datos para per\'iodos de tiempo, incluyendo la habilidad de representar per\'iodos infinitos.
 \item Soporte para tiempo v\'alido, transaccional y tablas bitemporales.
 \item Tiempo transaccional controlado por el sistema.
 \item Consultas temporales.
 \item Predicados y operadores que act\'uen sobre intervalos de tiempo.
-\end{itemize} 
+\end{itemize}
+\subsubsection*{Lenguaje de consulta temporales}
+Una Base de Datos Temporal es un repositorio de informaci\'on temporal. Un lenguaje de consulta temporal es cualquier lenguaje de consulta para bases de datos temporales.\\
+Las propiedades de un lenguaje de consulta temporal son:
+\begin{itemize}
+\item Sem\'antica declarativa
+\item Implementaci\'on eficiente.
+\item Independencia en la representaci\'on.
+\item Expresividad en la consulta.
+\end{itemize}
+Algunos ejemplos importantes son: TSQL, TQuel, HRDM, Backlog. Muchos otros son derivados de \'estos.
+\subsubsection*{DBMS Temporal}
+Los DBMS Temporales deben respaldar un lenguaje de definici\'on de datos temporales, un sistema de restricciones temporales, un lenguaje de manipulaci\'on de datos y un lenguaje de consulta temporal.\\
+Algunos ejemplos de DBMS Temporales son: TimeDB, Oracle Workspace Manager, PostgreSQL, IBM DB2, entre otros.
 \mychapter{4}{Bases de Datos Espaciales}
 \mychapter{5}{Bases de Datos Espacio-Temporales}
 
