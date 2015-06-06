@@ -205,6 +205,8 @@ Se\~nor X & Arroyos Cipreses & 16-Aug-1980 & 20-Apr-2004\\
 
 \end{center}
 
+
+
 \subsubsection*{Base de Datos Bitemporal}
 Incluyen ambos tiempos (V\'alido y Transaccional) lo que les permite proveer informaci\'on hist\'orica, a la vez que brindan la capacidad de hacer roll-back de los datos. En la siguiente figura se puede apreciar un ejemplo:
 \begin{figure}[h]
@@ -688,6 +690,61 @@ Algunos operadores:\\
 WM\_OVERLAPS,\ WM\_CONTAINS,\ WM\_MEETS,\ WM\_EQUALS,\ WM\_INTERSECTION, etc\'etera.
 
 \mychapter{4}{Bases de Datos Espaciales}
+
+En muchas \'areas de gesti\'on de informaci\'on existe la necesidad de administrar datos \textit{espacial}, \textit{geom\'etricos} o \textit{geogr\'aficos}: datos relacionados con el \textit{espacio}. El espacio de inter\'es puede ser, por ejemplo, la representaci\'on 2-d de la superficie de la tierra, un vol\'umen que contiene el modelo de un cerebro humano, o un espacio 3-d representando la disposici\'on de las cadenas de mol\'eculas de prote\'inas.
+Con el advenimiento de los DBMS relacionales, hubieron intentos por modelar esta informaci\'on en los sistemas de bases de datos convencionales. El problema: el soporte no es muy bueno para manejar \textit{grandes cantidades de datos espaciales}.
+
+\subsubsection*{Pensando espacialmente}
+?`D\'onde est\'a esto? ?`Cu\'anto tardo para llegar a X lugar?\\
+Hoy en d\'ia tenemos grandes herramientas para responder este tipo de preguntas: Google Maps, Virtual Earth, MapQuest, Yahoo, etc...\\
+Yendo m\'as all\'a, las organizaciones han descubierto que estas herramientas son un gran recurso para analizar patrones de datos.
+Por ejemplo, una popular empresa de pizzas, trazando los recorridos de las direcciones de los \textit{pizza lovers}, puede encontrar facilmente d\'onde inaugurar su nuevo local.
+\subsubsection*{Pensando espacialmente, ?`en un DBMS relacional?}
+Si bien los DBMS relacionales son muy populares y responden a la mayor\'ia de las consultas, la visi\'on real es que muchas de ellas son incapaces de manejar datos espaciales, o son poco amigables. Esto se debe a que el rol tradicional de un DBMS es y ha sido almacenar informaci\'on relacionada al mundo de los negocios: los datos que residen en esas grandes bases de datos es simple (nombres, saldos, direcciones, etc\'etera).\\
+Por ejemplo, una consulta como \textit{listar todos los empleados cuyo sueldo es mayor a X} puede ser simple y eficientemente respondida, a\'un en bases de datos gigantes. Pero, ?`qu\'e sucede si quiero saber: \textit{listar todos los empleados que residan a menos de 10 km de la compan\'ia}? En los DBMS relacionales, es posible contestar estas preguntas pero es totalmente \textit{ineficiente}.\\
+En base a esta problem\'atica nacen las Bases de Datos Espaciales.
+\subsubsection*{Aplicaciones de las BD Espaciales}
+\begin{itemize}
+\item Sistemas de Informaci\'on Geogr\'afica.
+\item Bases de Datos Multimedia.
+\item Im\'agenes satelitales.
+\item Modelo de circuitos integrados de gran tama\~no.
+\item Censos.
+\item Ciencias Ambientales.
+\item Astronom\'ia.
+\end{itemize}
+\subsubsection*{?`Qui\'en se beneficia?}
+\underline{Usuario de celular}: ?`D\'onde est\'a la siguiente estaci\'on de servicio? ?`Hay una camino a casa?\\
+\ \\
+\underline{M\'edico}: Basado en el siguiente MRI, ?`hemos tratado a alguien con el mismo resultado?\\
+\ \\
+\underline{Bi\'ologo molecular}: ?`Est\'a la topolog\'ia de la bios\'intesis del gel amino\'acido en el genoma descubierto 	en otra secuencia de la base de datos?\\
+\ \\
+\underline{Astr\'onomo}: Buscar todas las galaxias dentro de dos minutos de arcos de qu\'asares.\\
+\ \\
+\underline{Climat\'ologo}: Testear y verificar mi nuevo modelo clim\'atico.
+
+\subsubsection*{?`Qu\'e se busca?}
+Tener soporte para representar este tipo de tablas:\\
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Id & Pa\'is & Geograf\'ia \\
+\hline
+1 & Argentina & \includegraphics[width=0.6cm,height=1.2cm]{Imagenes/argentina.jpg}\\
+\hline
+2 & Brasil & \includegraphics[width=1.5cm,height=1.5cm]{Imagenes/brasil.jpg}\\
+\hline
+\end{tabular}\\
+\end{center}
+\ \\
+Y adem\'as brindar herramientas que permitan comparar eficientemente datos como los de la tercer columna.
+
+\subsection*{Bases de Datos Espaciales}
+\textbf{Definici\'on 1:} Es una Base de Datos que es optimizada para almacenar y consultar informaci\'on relacionada a objetos en el espacio, incluyendo puntos, l\'ineas y pol\'igonos.\\
+\textbf{Definici\'on 2:} Es una colecci\'on de datos espaciales y no espaciales que est\'an interrelacionados.\\
+
+
 \mychapter{5}{Bases de Datos Espacio-Temporales}
 
 \bibliography{ref.bib}
