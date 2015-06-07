@@ -16,7 +16,10 @@
 \bibliographystyle{ieeetr}
 \title{Bases de Datos Temporales, Espaciales y Espacio-Temporales}
 \date{\today}
-\author{Nicol\'as Del Piano}
+\author{Nicol\'as Del Piano\\D-3614/5\\
+\ \\
+Monograf\'ia final para la materia Bases de Datos Avanzadas
+}
 \date{}
 \newcommand{\mychapter}[2]{
     \setcounter{chapter}{#1}
@@ -31,15 +34,14 @@
 \newpage
 
 \mychapter{0}{Res\'umen}
-Este trabajo presenta una introducci\'on hacia las Bases de Datos Temporales, Espaciales y Espacio-Temporales. Las Bases de Datos Temporales (\textit{Temporal Databases}) est\'an dise\~nadas para la captura de informaci\'on que var\'ia en el tiempo. Las Bases de Datos Espaciales (\textit{Spatial Databases}) fueron concebidas por la necesidad de registrar el cambio geogr\'afico y f\'isico de cierta informaci\'on. Por \'ultimo, las Bases de Datos Espacio-Temporales (\textit{Spatio-Temporal Databases}) son el resultado de la uni\'on de las capacidades y propiedades ofrecidas por ambos tipos de Bases de Datos. Primero se presentar\'an conceptos de Bases de Datos cl\'asicas, para luego abordar m\'as claramente los temas centrales de esta monograf\'ia. El segundo cap\'itulo presenta de una manera detallada las Bases de Datos Temporales, el tercero lo hace para las Espaciales, y el cuarto para las Espacio-Temporales. Por \'ultimo se abordan t\'opicos generales relacionados con estos tipos de Bases de Datos.
+Este trabajo presenta una introducci\'on hacia las Bases de Datos Temporales, Espaciales y Espacio-Temporales.\\Las Bases de Datos Temporales (\textit{Temporal Databases}) est\'an dise\~nadas para la captura de informaci\'on que var\'ia en el tiempo. Las Bases de Datos Espaciales (\textit{Spatial Databases}) fueron concebidas por la necesidad de registrar el cambio geogr\'afico y f\'isico de cierta informaci\'on. Por \'ultimo, las Bases de Datos Espacio-Temporales (\textit{Spatio-Temporal Databases}) son el resultado de la uni\'on de las capacidades y propiedades ofrecidas por ambos tipos de Bases de Datos.\\Primero se presentar\'an conceptos de Bases de Datos cl\'asicas, para luego abordar m\'as claramente los temas centrales de esta monograf\'ia. El segundo cap\'itulo presenta de una manera detallada las Bases de Datos Temporales, el tercero lo hace para las Espaciales, y el cuarto para las Espacio-Temporales. Por \'ultimo se abordan t\'opicos generales relacionados con estos tipos de Bases de Datos.
 \mychapter{1}{Introducci\'on}
 Hoy en d\'ia, la cantidad de informaci\'on que manejan las corporaciones y empresas es gigantesca. Por esta raz\'on, es necesario el uso de una herramienta que provea una forma de gestionar adecuadamente esta informaci\'on. Este es el prop\'osito de las Bases de Datos: brindar al usuario una forma de controlar el acceso, almacenamiento y administraci\'on de los datos de la entidad en cuesti\'on.\\
 Con la aparici\'on de nuevas tecnolog\'ias, el surgimiento de nuevas necesidades fue inevitable, implicando que las Bases de Datos Relacionales no sean una bala de plata (aunque sean las m\'as usadas actualmente) para resolver todos los problemas de gesti\'on de datos. Surgieron conceptos como Miner\'ia de Datos, Data Warehouse y Big Data: la informaci\'on ya no tiene la misma dimensi\'on que antes. Fue entonces cuando el Modelo Relacional cl\'asico necesitaba extenderse para representar eficientemente datos que var\'ien en tiempo y espacio.\\
 Las Bases de Datos Temporales se encargan del dominio del tiempo y su relaci\'on con los datos, permite analizar la historia y controlar la validez temporal de los mismos. Una gran variedad de aplicaciones del mundo real manejan datos variables en el tiempo: control de inventario, registros m\'edicos, operaciones bancarias, sistemas de informaci\'on geogr\'afica, gesti\'on de reservas, aplicaciones cient\'ificas, etc\'etera. Esta necesidad de referencias temporales justifica la creaci\'on de un modelo de datos temporal.\\
 Las Bases de Datos Espaciales extienden el modelo para representar el dominio espacial, con estructuras que puedan identificar un objeto en el espacio. Deben permitir la descripci\'on de objetos espaciales mediante tres caracter\'isticas: atributos, localizaci\'on y topolog\'ia. Adem\'as deben proveer tipos de datos espaciales para estructurar entidades geom\'etricas en el espacio. Existen diversas \'areas donde la gesti\'on de informaci\'on geom\'etrica, geogr\'afica o espacial es crucial: Sistemas de Informaci\'on Geogr\'afica, Bases de Datos multimedia, im\'agenes satelitales, ciencias ambientales, astronom\'ia.\\
 El objetivo de las Bases de Datos Espacio-Temporales es extender los modelos de informaci\'on espacial para inclu\'ir el tiempo y describir en forma m\'as din\'amica la realidad que se quiere representar. El modelo espacio-temporal abarca aplicaciones demogr\'aficas, ecol\'ogicas, relacionadas con marketing, militares, urban\'isticas y de fen\'omenos naturales, entre otras.\\
-\mychapter{2}{Bases de Datos Relacionales}
-\mychapter{3}{Bases de Datos Temporales}
+\mychapter{2}{Bases de Datos Temporales}
 El tiempo es un aspecto importante para los fen\'omenos del mundo real: los eventos ocurren en momentos de tiempo espec\'ificos.\\
 A veces nos interesa saber con cierta certeza cu\'ando ocurri\'o tal evento, y poder compararlo con otros para obtener informaci\'on de inter\'es.\\
 Muchas de las \'areas donde se aplican las Bases de Datos tienen naturaleza temporal:
@@ -690,7 +692,7 @@ DBMS\_WM.UNTIL\_CHANGED es un TIMESTAMP que se comporta como MAX\_TIME hasta que
 Algunos operadores:\\
 WM\_OVERLAPS,\ WM\_CONTAINS,\ WM\_MEETS,\ WM\_EQUALS,\ WM\_INTERSECTION, etc\'etera.
 
-\mychapter{4}{Bases de Datos Espaciales}
+\mychapter{3}{Bases de Datos Espaciales}
 
 En muchas \'areas de gesti\'on de informaci\'on existe la necesidad de administrar datos \textit{espacial}, \textit{geom\'etricos} o \textit{geogr\'aficos}: datos relacionados con el \textit{espacio}. El espacio de inter\'es puede ser, por ejemplo, la representaci\'on 2-d de la superficie de la tierra, un vol\'umen que contiene el modelo de un cerebro humano, o un espacio 3-d representando la disposici\'on de las cadenas de mol\'eculas de prote\'inas.
 Con el advenimiento de los DBMS relacionales, hubieron intentos por modelar esta informaci\'on en los sistemas de bases de datos convencionales. El problema: el soporte no es muy bueno para manejar \textit{grandes cantidades de datos espaciales}.
@@ -1322,7 +1324,7 @@ Los constructores, operadores y relaciones son los que vienen con Spatial SQL, e
 
 
 
-\mychapter{5}{Bases de Datos Espacio-Temporales}
+\mychapter{4}{Bases de Datos Espacio-Temporales}
 
 El objetivo de las \textit{BDET} es extender los modelos de informaci\'on espacial para inclu\'ir tiempo y describir de forma m\'as din\'amica la realidad que se quiere representar. Se requiere que una \textit{BDET} sea capaz de representar modelos muy cercanos al mundo real y administrar objetos que cambian su ubicaci\'on y/o forma a trav\'es del tiempo.
 Se han convertido en un t\'opico muy imporante en estos \'ultimos a\~nos, ya que muchas de las aplicaciones como los \textit{Sistemas de Informaci\'on Geogr\'afica} y los sistemas de localizaci\'on necesitan almacenar datos espaciales con caracter\'isticas temporales.
@@ -1622,26 +1624,29 @@ Las \textit{STDB} tratan con aplicaciones donde los tipos de datos son caracteri
 Una alternativa para lidiar con la informaci\'on espacio-temporal, es constru\'ir un DBMS especializado para dar un soporte eficiente a los tipos de datos y consultas (\textbf{CONCERT} (Relly et al. 1997) y \textbf{SECONDO} (Dieker y G\"uting 2000)). Cuando no sea posible usar un DBMS especializado, otra alternativa ser\'ia extender un DBMS (orientado a objetos o relacional), ya sea open source o comercial, para la manipulaci\'on y almacenamiento de objetos espacio-temporales.\\
 Aunque los DBMS tienen capacidad de extenderse y mecanismos para soportar estas necesidades espacio-temporales, no existe un DBMS open source con una extensi\'on espacio-temporal. Otra alternativa es crear una arquitectura por capas sobre una DBMS ya existente. \textit{Oracle} brinda soporte espacio-temporal con las \textit{versioned tables} de su Workspace Manager, pero es comercial.
 
+\subsubsection*{Sistemas de Informaci\'on Geogr\'afica}
+
+Los Sistemas de Informaci\'on Geogr\'afica (SIG) datan del a\~o 1970. Un SIG es una tecnolog\'ia basada en computadoras de prop\'osito general y es \'util para almacenar, manejar y explotar datos geogr\'aficos en forma digital. Se integra por un conjunto de subsistemas enfocados en la captura, el almacenamiento, el an\'alisis, la visualizaci\'on y la graficaci\'on de diversos conjuntos de datos espaciales o georeferenciados. El n\'ucleo de software de los SIG es el DBMS. Tal sistema debe tener la capacidad de almacenar y gestionar las entidades asociando su representaci\'on geom\'etrica con su representaci\'on constituida por atributos.
+
 \subsubsection*{TerraLib}
-Es una librer\'ia \textit{GIS} open source que extiende el modelo relacional de un \textit{DBMS} para el manejo del modelo de datos espacio temporal.\\
-\ \\
-\begin{figure}[
+Es una librer\'ia \textit{GIS} open source que extiende el modelo relacional de un \textit{DBMS} para el manejo del modelo de datos espacio temporal.
+\begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.6]{images/terralib.png}
 \caption{www.terralib.org}
 \end{center}
 \end{figure}
-\ \\
-Soporta diferentes DBMS, incluyendo Oracle, PostgreSQL y MySQL. Se programa en C++. Tiene su centro de desarrollo en Brasil y se distribuye bajo la licencia LGPL. Existen varias aplicaciones asociadas para facilitar la visualizaci\'on de consultas y el manejo del usuario.\\
-\ \\
-\begin{figure}
+
+\noindent Soporta diferentes DBMS, incluyendo Oracle, PostgreSQL y MySQL. Se programa en C++. Tiene su centro de desarrollo en Brasil y se distribuye bajo la licencia LGPL. Existen varias aplicaciones asociadas para facilitar la visualizaci\'on de consultas y el manejo del usuario.
+
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{images/terraview.png}
 \caption{TerraView, un entorno gr\'afico para utilizar TerraLib.}
 \end{figure}
 
 \subsubsection*{Problema}
-Existen numerosas bases de datos relacionales con extensiones espaciales y temporales, pero las bases de datos espacio-temporales no est\'an basadas en el modelo relacional por razones pr\'acticas. Hasta ahora no hay \textit{RDBMS} con extensiones espacio-temporales incorporadas. TerraLib es una especie de medio externo que las utiliza para brindar estas herramientas.\\
+Existen numerosas bases de datos relacionales con extensiones espaciales y temporales, pero las bases de datos espacio-temporales no est\'an basadas en el modelo relacional por razones pr\'acticas. Hasta ahora no hay \textit{RDBMS} con extensiones espacio-temporales incorporadas. TerraLib es una especie de medio externo que las utiliza para brindar estas herramientas.
 
 \subsubsection*{The Google Approach}
 Ya conocemos el inmenso trabajo de \textit{Google} en los aspectos espacio-temporales. Entonces, \textit{?` c\'omo lidia Google este tipo de problemas?}
@@ -1649,8 +1654,8 @@ Ya conocemos el inmenso trabajo de \textit{Google} en los aspectos espacio-tempo
 \textit{Keyhole Markup Language} es una notaci\'on \textit{XML} para representar datos geogr\'aficos en 3 dimensiones. Permite describir y almacenar informaci\'on geogr\'afica as\'i como tambi\'en incorporar temporal. \textit{KML} es un est\'andar abierto y de su mantenimiento se encarga el Open Geospatial Consortium. Fue desarrollado para Google Earth y Google Maps.
 
 \subsubsection*{Google Earth}
-En \textit{Google Earth} 5 se implement\'o la visualizaci\'on de im\'agenes hist\'oricas. Es decir, podemos ver c\'omo se ha ido construyendo el edificio al lado de casa, o c\'omo era el entorno de nuestro pueblo a\~nos atr\'as.\\
-\ \\
+En \textit{Google Earth} 5 se implement\'o la visualizaci\'on de im\'agenes hist\'oricas. Es decir, podemos ver c\'omo se ha ido construyendo el edificio al lado de casa, o c\'omo era el entorno de nuestro pueblo a\~nos atr\'as.
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.6]{images/earth.jpg}
