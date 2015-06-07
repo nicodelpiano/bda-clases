@@ -5,6 +5,7 @@
 \usepackage{latexsym}
 \usepackage{pdfpages}
 \usepackage[normalem]{ulem}
+\usepackage[spanish]{babel}
 \usepackage{graphicx}
 \usepackage{graphics}
 \usepackage{qtree}
@@ -743,6 +744,582 @@ Y adem\'as brindar herramientas que permitan comparar eficientemente datos como 
 \subsection*{Bases de Datos Espaciales}
 \textbf{Definici\'on 1:} Es una Base de Datos que es optimizada para almacenar y consultar informaci\'on relacionada a objetos en el espacio, incluyendo puntos, l\'ineas y pol\'igonos.\\
 \textbf{Definici\'on 2:} Es una colecci\'on de datos espaciales y no espaciales que est\'an interrelacionados.\\
+\ \\
+Deben permitir la descripci\'on de los objetos espaciales mediante tres caracter\'isticas:\\
+\ \\
+\begin{itemize}
+\item \textbf{Atributos}: qu\'e es un objeto de acuerdo a sus caracter\'isticas.
+\item \textbf{Localizaci\'on}: conocer d\'onde est\'a el objeto y qu\'e lugar ocupa.
+\item \textbf{Topolog\'ia}: mejorar la interpretaci\'on sem\'antica del contexto y establecer jerarqu\'ias.
+\end{itemize}
+
+\subsubsection*{DBMS Espacial}
+\begin{itemize}
+\item \textit{Un SDBMS es un DBMS.}
+\item \textit{Ofrece datos espaciales (SDTs) en su modelo de datos y su lenguaje de consulta.}
+\item \textit{Soporta tipos de datos espaciales en su implementaci\'on, proveyendo al menos indexaci\'on espacial y algoritmos eficientes para joins espaciales.}
+\end{itemize}
+Un \textit{SDBMS} es un \textit{DBMS}. Suena trivial; refleja el hecho de que la informaci\'on espacial o geom\'etrica est\'a, en pr\'actica, conectada con la informaci\'on \textit{no-espacial}. El \textit{SDBMS} tiene propiedades adicionales para manejar datos espaciales.\\
+\ \\
+\textbf{Tipos de datos espaciales:} POINT, LINE, REGION, etc\'etera.\\
+Proveen una abstracci\'on fundamental para modelar la estructura de entidades geom\'etricas en el espacio, as\'i como sus relaciones, propiedades y operaciones.
+\subsubsection*{Objetivos de un SDBMS}
+Deben integrar la representaci\'on y manipulaci\'on de datos geom\'etricos y espaciales con los datos no espaciales en un nivel l\'ogico y adem\'as proveer un soporte eficiente para almacenar y procesar datos a nivel f\'isico.
+\subsubsection*{Requerimientos de un SDBMS}
+\begin{itemize}
+\item El lenguaje de consulta debe incorporar nuevas funciones sobre componentes geom\'etricos.
+\item Utilizar m\'etodos de acceso eficientes.
+\item Incorporar nuevos algoritmos para procesar consultas que satisfacen combinaciones de restricciones.
+\item La representaci\'on l\'ogica debe ser extendida a datos geom\'etricos.
+\item Capacidad de manejar grandes colecciones de objetos geom\'etricos.
+\end{itemize}
+\subsection*{Hacia un modelo de datos espacial}
+Asumiendo aplicaciones 2-d y GIS, existen dos aspectos importantes que necesitan ser representados:\\
+\begin{itemize}
+\item \textbf{Objetos en el Espacio}: distinguir entre entidades espaciales de acuerdo a su representaci\'on geom\'etrica.
+\item \textbf{Espacio}: describir cada punto del espacio, es decir, tener una idea de la representaci\'on del espacio mismo.
+\end{itemize}
+\subsubsection*{Modelando Datos Espaciales}
+Los datos espaciales tienen las siguientes desventajas:
+\begin{itemize}
+\item Estructura compleja.
+\item Las SBD tienden a ser muy grandes.
+\item No existe un \'algebra est\'andar.
+\item Operadores no cerrados.
+\item Costo computacional elevado.
+\end{itemize}
+Es por ello que hay que implementar algoritmos y estructuras de datos que optimicen la manipulaci\'on de los mismos.
+\subsubsection*{Objetos en el Espacio}
+Son objetos \'unicos e individuales. Para modelarlos, las abstracciones fundamentales son el \textit{punto}, la \textit{l\'inea} y la \textit{regi\'on} (pol\'igono).\\
+\ \\
+\begin{center}\includegraphics[width=8cm,height=3cm]{Imagenes/figurasgeom.png}
+\end{center}
+\subsubsection*{Punto}
+Un punto representa el aspecto geom\'etrico de un objeto para el cual lo \'unico relevante es su localizaci\'on en el espacio.
+Por ejemplo, una ciudad puede ser modelada como un punto en un mapa.\\
+\ \\
+\begin{center}\includegraphics[width=3cm,height=3cm]{Imagenes/mapa1.png}
+\end{center}
+\subsubsection*{L\'inea}
+Una l\'inea representa es la abstracci\'on b\'asica del movimiento a trav\'es del espacio, o conexiones en espacio.
+Por ejemplo, r\'ios, carreteras, cables de tel\'efono, etc\'etera.\\
+Usualmente representadas como \textit{polil\'ineas}, i.e, secuencias de segmentos.
+\subsubsection*{Regi\'on o pol\'igono}
+Una regi\'on es una abstracci\'on para algo que tenga una extensi\'on en el espacio 2-d. Por ejemplo un pa\'is, un lago, un parque nacional, etc\'etera. Una regi\'on puede tener huecos y puede ser conformada por distintos objetos del espacio.\\
+\ \\
+\begin{center}\includegraphics[width=4cm,height=1.8cm]{Imagenes/poligonos.png}
+\end{center}
+\subsubsection*{Espacio}
+Hay que caracterizar los puntos del espacio. De esta forma, podemos modelar mapas tem\'aticos que indiquen por ejemplo, la divisi\'on de un pa\'is en provincias. Existen dos importantes instancias en las colecciones de objetos relacionadas espacialmente (espacio):son las \textit{particiones} y las \textit{redes}.
+\subsubsection*{Particiones}
+Una \textit{partici\'on} puede ser vista como un conjunto de regiones que son disjuntas. La adyacencia en este caso tiene un inter\'es particular; pares de regiones que tienen frontera com\'un. Pueden ser usadas para representar mapas.
+\ \\
+\begin{center}\includegraphics[width=3cm,height=1.8cm]{Imagenes/particion.png}
+\end{center}
+\subsubsection*{Redes}
+Una red puede ser vista como un grafo embebido en el plano. Est\'a compuesta por un conjunto de objetos puntos (nodos) y un conjunto de objetos l\'ineas (aristas). Pueden ser usadas para representar elementos geogr\'aficos como carreteras, r\'ios, transportes p\'ublicos, etc\'etera.
+\ \\
+\begin{center}\includegraphics[width=3cm,height=1.8cm]{Imagenes/red.png}
+\end{center}
+
+\subsubsection*{Otras abstracciones}
+Hemos mencionado hasta aqu\'i las m\'as comunes. Obviamente, existen otras como las \textit{particiones anidadas} (e.g. un pa\'is divido en provincias, y a su vez cada provincia en estados), o los modelos de terrenos digitales, para representar relieves.\\
+\ \\
+\begin{center}\includegraphics[width=3cm,height=2.5cm]{Imagenes/relieves.png}
+\end{center}
+
+\subsubsection*{Organizando el Espacio}
+La geometr\'ia Euclidiana no es adecuada como una base para modelar en las bases de datos espaciales.
+\begin{itemize}
+\begin{small}
+\item El espacio Eucl\'ideo es \textbf{cont\'inuo}, i.e., los puntos son representados como un par de n\'umeros reales: $p = (x,y) \in \mathbf{R}^{2}$.
+\item Pero la computadora trabaja en forma \textbf{discreta}.
+\begin{itemize}
+\item $\Rightarrow$ el espacio es representado por un \textit{raster discreto}.
+\end{itemize}
+\end{small}
+\end{itemize}
+\textbf{Ejemplo:} Intersecci\'on de dos l\'ineas
+\begin{itemize}
+\begin{small}
+\item El punto de intersecci\'on es redondeado al punto de la grilla m\'as cercano.
+\item Una prueba para determinar si el punto de intersecci\'on est\'a en una de las l\'ineas determina un resultado falso.
+\end{small}
+\end{itemize}
+\begin{center}
+\includegraphics[width=4cm,height=3cm]{Imagenes/1.png}
+\end{center}
+\textbf{Soluci\'on:} Definir una base geom\'etrica discreta para modelar el espacio, as\'i tambi\'en como para lidiar con su implementaci\'on.\\
+\ \\
+Dos intentos para una base geom\'etrica:
+\begin{itemize}
+\item \textbf{Simplicial complexes} (Frank \& Kuhn)
+\item \textbf{Realms} (G\"uting \& Schneider)
+\end{itemize}
+
+\subsubsection*{Organizando el Espacio: Simplicial Complexes}
+Conceptos b\'asicos de \textbf{simplicial complexes}
+\begin{itemize}
+\item \textbf{d-simplex}: Un objeto de dimensi\'on d (ver Figura 4.5).
+\begin{figure}[h]\center
+\includegraphics[width=6cm,height=2cm]{Imagenes/2.png}
+\caption{Simplices de diferentes dimensiones}\end{figure}
+\item \textbf{Simplicial Complex:} Un conjunto finito de simplices tales que la intersecci\'on de dos simplices cualquiera en el conjunto es un componente usado en los simplices (ver Figura 4.6).
+\begin{figure}[h]\center \includegraphics[width=6cm,height=2cm]{Imagenes/3.png} \caption{Intersecci\'on de simplices formando componentes}\end{figure}
+\end{itemize}
+
+\subsubsection*{Organizando el Espacio: Realm}
+\textbf{Realm:} Un conjunto finito de puntos y segmentos de l\'ineas definidos sobre una grilla tal que:
+\begin{small}
+\begin{itemize}
+\item cada punto o punto final de los segmentos es un punto en la grilla
+\item cada punto final de un segmento es un punto del realm
+\item ning\'un punto del realm se encuentra dentro de un segmento
+\item dos segmentos no se intersecan salvo en sus puntos finales
+\end{itemize}
+\end{small}
+Realm provee una descripci\'on completa de la geometr\'ia (puntos y l\'ineas), como puede observarse en la siguiente figura:
+\begin{center}\includegraphics[scale=0.3]{Imagenes/4.png}\end{center}
+\begin{small}
+\end{small}
+
+\subsubsection*{Tipos de Datos y \'Algebras Espaciales}
+Las b\'asicas abstracciones espaciales pueden ser embebidas en un DBMS existente usando tipos abstractos de datos.
+\begin{itemize}
+\item \textbf{Tipos de Datos Espaciales} encapsulan
+\begin{itemize}
+\item la estructura de un objeto espacial, e.g., regi\'on
+\item operaciones sobre esas estructuras
+\end{itemize}
+\item \textbf{\'Algebra Espacial}, es una colecci\'on de datos espaciales con operaciones relacionadas
+\begin{itemize}
+\item Completitud y clausura deben ser propiedades del \'algebra
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{\'Algebra ROSE}
+El \'algebra de ROSE (RObust Spatial Extension, G\"uting \& Schneider) es un \'algebra espacial con tipos de datos espaciales basados en el modelo Realm (esto es, objetos compuestos por elementos Realm).
+Este \'algebra utiliza como tipos de datos puntos, l\'ineas y regiones.\\
+\begin{figure}[h]
+\caption{Tipos de datos del \'algebra de ROSE}
+\begin{center}
+\includegraphics[scale=0.4]{Imagenes/5.png}
+\end{center}
+\end{figure}
+
+\subsubsection*{\'Algebra ROSE: Operaciones}
+Teniendo en cuenta los siguientes conjuntos:\\EXT = $\lbrace$l\'ineas, regiones$\rbrace$\ \ \ \ GEO = $\lbrace$puntos, l\'ineas, regiones$\rbrace$\\podemos definir las operaciones sobre el \'algebra de ROSE de la siguiente manera:
+\begin{itemize}
+\item Predicados espaciales para relaciones topol\'ogicas:
+\begin{itemize}
+\item \textbf{inside}: geo $\times$ regions $\rightarrow$ bool
+\item \textbf{intersect, meets}: ext1 $\times$ ext2 $\rightarrow$ bool
+\item \textbf{adjacent, encloses}: regions $\times$ regions $\rightarrow$ bool
+\end{itemize}
+\item Operaciones que devuelven tipos de datos espaciales at\'omicos:
+\begin{itemize}
+\item \textbf{intersection}: lines $\times$ lines $\rightarrow$ points
+\item \textbf{intersection}: regions $\times$ regions $\rightarrow$ regions
+\item \textbf{plus, minus}: geo $\times$ geo $\rightarrow$ geo
+\item \textbf{contour}: regions $\rightarrow$ lines
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item Operadores espaciales que devuelven n\'umeros:
+\begin{itemize}
+\item \textbf{dist}: geo1 $\times$ geo2 $\rightarrow$ real
+\item \textbf{perimeter, area}: regions $\rightarrow$ real
+\end{itemize}
+\item Operadores espaciales en conjuntos de objetos:
+\begin{itemize}
+\item \textbf{sum}: set(obj) $\times$ (obj $\rightarrow$ geo) $\rightarrow$ geo
+\item Alguna funci\'on espacial agregada como por ejemplo la suma de las \'areas de las provincias determinan el \'area de un pa\'is.
+\item \textbf{closest}: set(obj) $\times$ (obj $\rightarrow$ geo1) $\times$ geo2 $\rightarrow$ set(obj)
+\item Determina dentro de un conjunto de objetos aquellos cuyo atributo espacial tiene m\'inima distancia.
+\item Otras operaciones complejas...
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{\'Algebra ROSE: Propiedades}
+Estos ejemplos son suficientes para ver qu\'e tipo de operaciones est\'an disponibles en un \'algebra espacial.\\
+Algunas propiedades que debe tener el \'algebra espacial son:
+\begin{itemize}
+\item Extensibilidad
+\item Completitud
+\item ?`Uno o m\'as tipos?
+\item Operaciones de conjuntos
+\end{itemize}
+
+\subsubsection*{Relaciones Espaciales}
+Entre las operaciones espaciales, podemos distinguir las \textit{relaciones}.
+\begin{itemize}
+\item Topol\'ogicas: adjacent, inside, disjoint. Son invariantes dentro de transformaciones topol\'ogicas como scaling, rotation, translation.
+\item De direcci\'on: above, below, north\_of.
+\item M\'etricas: distance $<$ 100.
+\end{itemize}
+Seis relaciones topol\'ogicas v\'alidas entre dos regiones simples (sin huecos, conectadas): \textit{disjoint, in, touch, equal, cover, overlap}.
+
+\subsubsection*{Integrando la Geometr\'ia en el Modelo de Datos}
+Los tipos de datos espaciales pueden ser embebidos en cualquier modelo de datos, e.g., el modelo relacional. El modelo de datos del DBMS debe ser extendido al nivel de tipos de datos at\'omicos, como strings y enteros.
+La idea b\'asica es representar \textbf{objetos espaciales} con objetos (del modelo de datos del DBMS) con al menos un atributo espacial.\\
+Los objetos espaciales son tuplas con al menos un atributo espacial.\\
+\ \\
+\texttt{\textbf{relation} estados (ename: STRING; area:REGION; epop: INTEGER)}\\
+\texttt{\textbf{relation} ciudades (cname: STRING; centro:POINT; ext:REGION; cpop: INTEGER)}\\
+\texttt{\textbf{relation} rios (rname: STRING; ruta:LINE)}
+
+\subsubsection*{Consultas}
+Dos problemas principales:
+\begin{itemize}
+\item Conectar las operaciones del \'algebra espacial (incluyendo los predicados de relaciones espaciales) a las facilidades de un lenguaje de consulta de un DBMS.\\
+Los operadores fundamentales son:
+\begin{itemize}
+\item Spatial selection
+\item Spatial join
+\item Overlay, fusion, ...
+\end{itemize}
+\item Proveer una representaci\'on gr\'afica de la informaci\'on espacial (o sea, los resultados de la consulta) y adem\'as una entrada gr\'afica para los valores en las consultas.
+\end{itemize}
+
+\subsubsection*{Consultas: Selecci\'on Espacial}
+\textbf{Selecci\'on Espacial}: retorna aquellos objetos que satisfacen un predicado espacial en la consulta.\\
+\ \\
+\textit{Todas las ciudades de Argentina}\\
+\texttt{SELECT cname FROM ciudades c \\
+WHERE c.centro inside Argentina.area}\\
+\ \\
+\textit{Todas las grandes ciudades en un radio de 100km de Rosario}\\
+\texttt{SELECT cname FROM ciudades c \\
+WHERE dist(c.centro, Rosario.centro) < 100\\
+\ \ \ AND c.pop > 500k}
+
+\subsubsection*{Consultas: Join Espacial}
+\textbf{Join Espacial:} un join que compara cualesquiera dos objetos que fueron \textit{joineados} basado en un predicado que toma los valores espaciales de ambos.\\
+\ \\
+\textit{Para cada r\'io de Argentina, encontrar todas las ciudades dentro de 50 kms}\\
+\texttt{SELECT r.rname, c.cname, length(intersection(r.ruta, c.area))\\
+FROM rios r, ciudades c \\
+WHERE r.ruta intersects Argentina.area \\
+\ \ \ AND dist(r.ruta, c.area) < 50}
+
+\subsubsection*{Consultas: Otras operaciones}
+
+\textbf{Overlay:} retorna las regiones que son el resultado de sobreposicionar dos particiones.\\
+\textbf{Fusion:} es una forma especial de agrupaci\'on. Para cada grupo obtenido, se forma la uni\'on de todos los valores de un atributo espacial.\\
+\textbf{Voronoi:} computa de una colecci\'on de objetos puntos \textit{S} la correspondiente colecci\'on de objetos regi\'on. Para cada punto \textit{p}, la regi\'on consiste de los puntos del plano m\'as cercanos a \textit{p}, y que no est\'en m\'as cercanos a otro punto de \textit{S}.  
+
+
+\subsubsection*{Consultas: I/O Gr\'afica}
+?`C\'omo determinar \texttt{Argentina} en los ejemplos anteriores(input), o c\'omo mostrar \texttt{intersection(ruta,Argentina.area)} o \texttt{rio.ruta}(output)?\\
+\ \\
+Requerimientos para consultas espaciales:
+\begin{itemize}
+\item Tipos de datos espaciales.
+\item Muestreo gr\'afico de los resultados de consulta.
+\item Combinaci\'on gr\'afica de varios resultados de consultas.
+\item Herramientas para interactuar con gr\'aficos de entrada y resultados.
+\item Facilidad para verificar el contenido de una muestra.
+\end{itemize}
+
+\subsubsection*{Formato de Datos Espaciales}
+Existen dos est\'andares de representaci\'on:
+\begin{itemize}
+\item \textbf{WKT} (Well Known Text)
+\item \textbf{WKB} (Well Known Binary)
+\end{itemize}
+
+\subsubsection*{Formato de Datos Espaciales: WKT}
+Esta representaci\'on es una codificaci\'on en formato ASCII para describir objetos espaciales. Es usada por \textit{PostgreSQL} en \textit{PostGIS}, y tambi\'en en Google Maps. Podemos describir puntos, multipuntos, l\'ineas, pol\'igonos, multipol\'igonos, puntos en 3 dimensiones, etc\'etera.\\
+\ \\
+Sintaxis:
+\begin{itemize}
+\item Punto: \texttt{POINT(30 50)}
+\item L\'inea: \texttt{LINESTRING(1 1, 5 5, 10 10)}
+\item Pol\'igono: \texttt{POLYGON ( (0 0, 10 0, 10 10, 0 10, 0 0),(20 20, 20 40, 40 40, 40 20, 20 20))}
+\end{itemize}
+
+\subsubsection*{Formato de Datos Espaciales: WKB}
+WKB utiliza enteros sin signo de un byte, enteros sin signo de cuatro bytes, y n\'umeros de ocho bytes de doble precisi\'on (formato IEEE 754). Un byte son ocho bits. Por ejemplo, un valor WKB que corresponde a un \texttt{POINT(1 1)} consiste en esta secuencia de 21 bytes (cada uno representado aquí por dos d\'igitos hexadecimales):\\
+\texttt{0101000000000000000000F03F000000000000F03F}\\
+\ \\
+\begin{tabular}{l l}
+Orden de byte & 01 $\rightarrow$ LE o BE\\
+Tipo WKB	  & 01000000 $\rightarrow$ tipo de objeto\\
+X & 000000000000F03F\\
+Y & 000000000000F03F\\
+\end{tabular}\\
+\ \\
+M\'as r\'apida que WKT, pero menos entendible para el usuario.
+
+\subsection*{Indexaci\'on Espacial}
+
+Organiza el espacio y los objetos en \'el de forma tal que s\'olo son considerados la parte del espacio y los objetos que sean relevantes a una consulta. B\'asicamente, es un mecanismo para decrementar el n\'umero de b\'usquedas. El objetivo principal es tratar de no visitar y tocar cada vez a todos los \textit{n} elementos en la BD. Los \'indices espaciales nos permiten optimizar la recuperaci\'on.\\
+
+\begin{figure}[h]
+\center
+\includegraphics[scale=0.5]{Imagenes/6.png}
+\caption{Im\'agen de Google Maps donde se utilizan m\'etodos de indexaci\'on espacial}
+\end{figure}
+\noindent El uso principal de la indexaci\'on es para la selecci\'on espacial, pero es usado tambi\'en para otras operaciones como join espacial o encontrar el objeto m\'as cercano.\\
+Dos enfoques principales de la indexaci\'on espacial:
+\begin{itemize}
+\item Mapear objetos espaciales al espacio 1-D y utilizar t\'ecnicas est\'andar de indexaci\'on, como B-trees
+\item Estructuras de indexaci\'on espacial dedicadas, como R-trees
+\end{itemize}
+
+\subsubsection*{Indexaci\'on Espacial: R-Tree}
+\textbf{R-Tree} es una estructura de datos similar a los \textit{B-Trees}, con la diferencia que se utilizan para m\'etodos de acceso espacial. Es decir, podemos indexar coordenadas por ejemplo.\\
+Cada nodo tiene un n\'umero variable de entradas, y cada entrada almacena dos datos: una forma de identificar a un nodo hijo y el conjunto l\'imite de todas las entradas de ese nodo hijo.\\
+\textbf{B\'usqueda:} recursiva desde la ra\'iz, se verifica si el rect\'angulo de la consulta se solapa con alg\'un rect\'angulo del nodo.\\
+\textbf{Inserci\'on:} partiendo de la ra\'iz, se usa una heur\'istica para seleccionar el nodo candidato.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.5]{Imagenes/20.png}
+\end{center}
+\caption{Estructura del R-Tree}
+\end{figure}
+
+\noindent La idea fundamental de la indexaci\'on espacial es la aproximaci\'on.
+\begin{itemize}
+\item Aproximaci\'on continua
+\item Aproximaci\'on por grilla
+\end{itemize}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.2]{Imagenes/7.png}
+\caption{Aproximaci\'on continua a la izquierda, aproximaci\'on por grilla a la derecha}
+\end{center}
+\end{figure}
+Para procesar una consulta, se procede a la estrategia de \textbf{filtrado y refinamiento}.
+\begin{enumerate}
+\item Filtrado: retorna un conjunto (donde est\'a la soluci\'on) de los valores posibles que satisfacen un predicado
+\item Refinado: Para cada candidato, se refina la b\'usqueda chequeando la geometr\'ia
+\end{enumerate}
+
+\noindent Las estructuras espaciales son dise\~nadas para almacenar puntos (para objetos puntos) o rect\'angulos (l\'ineas y regiones). Las operaciones sobre esas estructuras son inserci\'on, borrado y pertenencia.\\
+Consultas t\'ipicas:
+\begin{itemize}
+\item Puntos
+\begin{itemize}
+\item Consulta de rango: todos los puntos dentro de un rect\'angulo
+\item Vecino m\'as cercano: el punto m\'as cercano a un punto consultado
+\item Distancia: desde un punto, enumerar los puntos que est\'an a cierta distancia 
+\end{itemize}
+\item Rect\'angulos
+\begin{itemize}
+\item Intersecci\'on
+\item Contenido
+\end{itemize}
+\end{itemize}
+
+
+\subsubsection*{Indexaci\'on Espacial: Estructuras}
+\begin{itemize}
+\item Una estructura de indexaci\'on espacial dedicada organiza los objetos en \textbf{cubetas}.
+\item Cada cubeta tiene asociada una \textbf{regi\'on}, que es, una parte del espacio que contiene todos los objetos almacenados en esa cubeta.
+\item Para estructuras de datos de puntos, las regiones son disjuntas
+\begin{itemize}
+\item el espacio es particionado y cada punto pertenece a solo una partici\'on (cubeta)
+\begin{center}\includegraphics[scale=0.3]{Imagenes/8.png}
+\end{center}\end{itemize}
+\item Para estructuras con rect\'angulos, las cubetas pueden solaparse
+\end{itemize}
+
+
+\subsubsection*{Indexaci\'on Espacial: Estructura de Puntos}
+Estructuras espaciales para puntos: en $k$ dimensiones son representadas como una tupla $t = (x_1,...,x_k)$\\
+\ \\
+\textbf{\'Indice de Grilla}: Estructura de indexaci\'on espacial para puntos (Nievergelt, Hinterberger y Sevcik 84)
+\begin{center}
+\includegraphics[scale=0.4]{Imagenes/9.png}
+\end{center}
+
+\begin{itemize}
+\item El directorio es un arreglo $k$-dimensional cuyas entradas son punteros a las cubetas.
+\item Todos los puntos en las celdas son almacenados en cubetas apuntando a la entrada de directorio correspondiente.
+%\item Escalas peque\~nas. El directorio es almacenado en disco.
+\end{itemize} 
+\noindent \textbf{kd-tree:}\\
+\'Arbol binario donde cada nodo interno contiene un valor clave de una dimensi\'on. La clave en el nodo ra\'iz (nivel 0) divide el espacio de datos con respecto a la dimensi\'on 0, las claves en sus hijos (nivel 1) divide los dos subespacios y as\'i sucesivamente hasta que se terminan las dimensiones, luego se reinicia el ciclo.\\
+\begin{center}
+\includegraphics[scale=0.5]{Imagenes/10.png}
+\end{center}
+
+\noindent \textbf{quad-tree:}\\
+Divide el espacio de datos en forma recursiva en 4 cuadrantes (NO, NE, SO, SE)\\
+\begin{center} \includegraphics[scale=0.5]{Imagenes/11.png} \end{center}
+
+\noindent \textbf{quad-tree:}\\
+Hay diferentes algoritmos para procesar puntos, l\'ineas, pol\'igonos (i.e., distintos tipos de nodos, algoritmos de consultas).
+Es usado muy frecuentemente en GIS comerciales para comprimir, almacenar y manipular im\'agenes raster.\\
+\begin{center} \includegraphics[scale=0.5]{Imagenes/12.png} \end{center}
+
+\subsubsection*{Indexaci\'on Espacial: Estructura de Rect\'angulo}
+Dos enfoques principales:
+\begin{itemize}
+\item Solapamiento de regiones
+\item Clipping (Recorte)
+\end{itemize}
+
+\subsubsection*{Indexaci\'on Espacial: Estructura de Rect\'angulo}
+\textbf{Solapamiento de regiones:} se abandona el espacio particionado y las regiones pueden solaparse, e.g., \textbf{R-tree}.
+\begin{itemize}
+\item Ventaja: El objeto espacial (clave) est\'a en una sola cubeta.
+\item Desventaja: Muchos caminos terminan en un solapamiento de cubetas.
+\end{itemize}
+\begin{center}\includegraphics[scale=0.3]{Imagenes/13.png}
+\end{center}
+
+\noindent \textbf{Recorte (Clipping):} las cubetas son disjuntas, pero los rect\'angulos son cortados en varias piezas, e.g., \textbf{R$^+$-tree}.
+\begin{itemize}
+\item Ventaja: Menos ramas en el \'arbol
+\item Desventaja: M\'ultiples entradas para un objeto espacial
+\end{itemize}
+\begin{center}\includegraphics[scale=0.5]{Imagenes/14.png}
+\end{center}
+
+\subsection*{Estado del Arte: Las BDE en la actualidad}
+
+\subsubsection*{Spatial SQL}
+
+\textit{SQL espacial} brinda soporte para nuevos tipos de datos como:
+\begin{itemize}
+\item Point
+\item LineString
+\item Polygon
+\item MultiPoint
+\item etc\'etera...
+\end{itemize}
+Relaciones entre objetos:
+\begin{itemize}
+\item ST\_Contains
+\item ST\_Equals
+\item ST\_Intersects
+\item ST\_Touches
+\item etc\'etera...
+\end{itemize}
+Constructores de objetos:
+\begin{itemize}
+\item ST\_MultiLineString
+\item ST\_Point
+\item ST\_MultiPolygon
+\item ST\_MultiCurve
+\item etc\'etera...
+\end{itemize}
+\subsubsection*{Spatial SQL: Ejemplo}
+Crear una tabla nueva:\\
+\ \\
+\texttt{CREATE TABLE Rio(\\
+\ \ \ \ \ Nombre varchar(30),\\
+\ \ \ \ \ Origen varchar(30),\\
+\ \ \ \ \ Longitud number,\\
+\ \ \ \ \ Forma LineString );}\\
+\ \\
+\textbf{Consulta:} encontrar nombres de pa\'ises que son vecinos de Estados Unidos en la tabla Pa\'ises.\\
+\ \\
+\texttt{SELECT P1.Nombre\\
+FROM Paises P1, Paises P2\\
+WHERE Touch(P1.Forma,P2.Forma)=1\\
+AND P2.Nombre = USA}\\
+\ \\
+\textbf{Consulta:} encontrar la distancia entre dos puntos, dada una tabla de puntos.\\
+\ \\
+\texttt{SELECT ST\_Distance(geometrycolumn,\\
+\ \ \ \ ST\_GeomFromText('POINT(1 2)',4326)\\
+FROM tabladepuntos\\
+ORDER BY\\
+ST\_Distance(geometrycolumn,\\
+\ \ \ \ ST\_GeomFromText('POINT(1 2)',4326) LIMIT 10)}
+\subsubsection*{Alternativas Espaciales}
+Algunas de las elecciones que podemos hacer hoy en d\'ia en materia de DBMS espaciales son:\\
+\ \\
+\textbf{Open Source}
+\begin{itemize}
+\item MySql (actualmente viene con soporte espacial)
+\item MongoDB (no relacional)
+\item MariaDB
+\item PostgreSQL $+$ PostGIS
+\item SpatialDB
+\item y m\'as ...
+\end{itemize}
+\textbf{Pagos}
+\begin{itemize}
+\item Oracle
+\item SQL Server
+\end{itemize}
+
+\subsubsection*{PostgreSQL $+$ PostGIS}
+\begin{center}
+\includegraphics[scale=0.3]{Imagenes/23.png}
+\end{center}
+\textbf{PostgreSQL}\\
+PostgreSQL es un sistema administrador
+ de bases de datos objeto-relacional 
+basado en POSTGRES, desarrollado en la Universidad de California 
+en Berkeley, en el Departamento de Ciencias de la Computación. POSTGRES fue 
+pionero de muchos conceptos que solo estuvieron disponibles en algunos 
+sistemas de bases de datos comerciales mucho más tarde. 
+PostgreSQL es un proyecto desarrollado
+ con código abierto que soporta el 
+estándar SQL y ofrece muchas características interesantes: 
+
+\begin{itemize}
+\item Consultas complejas
+\item Claves for\'aneas
+\item Disparadores
+\item Vistas
+\item Integridad transaccional
+\item Control de concurrencia
+\end{itemize}
+
+Adem\'as PostgreSQL puede ser ampliado 
+por el usuario de muchas formas,
+mediante la adici\'on de nuevas definiciones de: 
+
+\begin{itemize}
+\item Tipos de datos
+\item Funciones
+\item Operadores
+\item Funciones de agregado
+\item M\'etodos indexados
+\item Lenguajes procedurales
+\end{itemize}
+
+Debido a que es de licencia libre, PostgreSQL puede ser usado, modificado 
+y distribuido por todo el mundo de forma gratuita para cualquier fin, ya sea privado, comercial o acad\'emico. Es considerado
+ como uno de los mejores gestores de 
+bases de datos de software libre. Muchas 
+empresas han iniciado el uso de esta herramienta benefici\'andose en la reducci\'on de los costos y en el aumento de la fiabilidad.  
+
+\textbf{PostGIS}
+PostGIS es una extensi\'on del sistema de bases de datos objeto-relacional 
+PostgreSQL, que permite el uso de objetos geogr\'aficos. Fue creado por 
+Refractions Research Inc, como un proyecto de investigaci\'on de tecnolog\'ia de bases de datos espaciales.\\
+\ \\
+Geometr\'ias b\'asicas soportadas:
+
+\begin{itemize}
+\item POINT 	(x y)
+\item LINESTRING (x$_1$ y$_1$, ...,x$_n$ y$_n$)
+\item POLYGON (x$_1$ y$_1$, ...,x$_n$ y$_n$)
+\end{itemize}
+
+Tambi\'en brindan soporte para multi-geometr\'ias:
+
+\begin{itemize}
+\item MULTIPOINT ((POINT$_1$), ...,(POINT$_n$))
+\item MULTILINESTRING ((LINESTRING$_1$), ...,(LINESTRING$_n$))
+\item MULTIPOLYGON ((POLYGON$_1$), ...,(POLYGON$_n$))
+\end{itemize}
+
+Los constructores, operadores y relaciones son los que vienen con Spatial SQL, es decir, los mencionados anteriormente. \textit{PostGIS} agrega caracter\'isticas interesantes como su propio spatial join, GIS overlay functions, primitivas 2D y 3D, adem\'as de un entorno de desarrollo amigable.\\
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.2]{Imagenes/24.png}
+\end{center}
+\caption{Entorno de desarrollo PostGIS}
+\end{figure}
+
 
 
 \mychapter{5}{Bases de Datos Espacio-Temporales}
